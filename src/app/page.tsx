@@ -255,6 +255,7 @@ export default function Marketing() {
           fill
           className="object-cover opacity-40"
         />
+        <div className="absolute inset-0 bg-carbon/50" />
         <div
           className="absolute inset-0"
           style={{ background: "linear-gradient(to right, var(--carbon) 30%, transparent)" }}
