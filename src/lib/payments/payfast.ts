@@ -41,7 +41,13 @@ function config() {
 // PayFast spec: PHP-style urlencode — spaces as "+", uppercase hex,
 // and !'()* percent-encoded.
 function pfEncode(value: string): string {
-  return encodeURIComponent(value.trim())
+  return pfEncodeRaw(value.trim());
+}
+
+// Same encoding without trimming — ITN verification must reproduce the
+// posted values byte-for-byte, exactly as PayFast signed them.
+function pfEncodeRaw(value: string): string {
+  return encodeURIComponent(value)
     .replace(/%20/g, "+")
     .replace(
       /[!'()*]/g,
@@ -116,17 +122,23 @@ export function parseItnBody(rawBody: string): Record<string, string> {
 }
 
 // (a) Rebuild the signature from the posted params, in posted order,
-// excluding `signature` itself.
+// excluding `signature` itself. Unlike the checkout signature, the ITN
+// signature covers EVERY posted field — including empty ones — with values
+// reproduced byte-for-byte (no trimming). This mirrors PayFast's reference
+// implementation, which hashes all $_POST vars except `signature`.
 function verifySignature(rawBody: string, passphrase: string): boolean {
   const params = new URLSearchParams(rawBody);
-  const pairs: Array<[string, string]> = [];
+  const parts: string[] = [];
   let posted = "";
   for (const [key, value] of params.entries()) {
     if (key === "signature") posted = value;
-    else pairs.push([key, value]);
+    else parts.push(`${key}=${pfEncodeRaw(value)}`);
   }
   if (posted === "") return false;
-  return signature(pairs, passphrase) === posted.toLowerCase();
+  let str = parts.join("&");
+  if (passphrase !== "") str += `&passphrase=${pfEncode(passphrase)}`;
+  const computed = createHash("md5").update(str).digest("hex");
+  return computed === posted.toLowerCase();
 }
 
 // (b) Source validation. On Vercel the TCP peer is a proxy, so the client IP
@@ -149,11 +161,18 @@ async function verifyByPostback(
   validateUrl: string,
   rawBody: string
 ): Promise<boolean> {
+  // PayFast's validate endpoint expects the received params WITHOUT the
+  // signature field, re-encoded in posted order (reference implementation).
+  const params = new URLSearchParams(rawBody);
+  const body = [...params.entries()]
+    .filter(([key]) => key !== "signature")
+    .map(([key, value]) => `${key}=${pfEncodeRaw(value)}`)
+    .join("&");
   try {
     const res = await fetch(validateUrl, {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: rawBody,
+      body,
       cache: "no-store",
     });
     const text = (await res.text()).trim();
