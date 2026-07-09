@@ -70,8 +70,8 @@ export default function Marketing() {
       {/* Hero */}
       <section className="relative flex min-h-dvh items-end overflow-hidden">
         <Image
-          src="/images/hero-garage.jpg"
-          alt="A clean dark sedan alone under a single light in an underground parking garage"
+          src="/images/hero-estate.jpg"
+          alt="A clean dark sedan in an outdoor parking bay at a modern residential estate under an overcast sky"
           fill
           priority
           className="object-cover opacity-70"
@@ -200,7 +200,7 @@ export default function Marketing() {
           <div className="relative order-1 aspect-[3/4] overflow-hidden rounded-card border border-carbon-border lg:order-2">
             <Image
               src="/images/technician.jpg"
-              alt="A focused Glint technician in matte black uniform detailing a silver sedan"
+              alt="A focused Glint technician in matte black uniform hand-drying a silver sedan in an outdoor office park bay"
               fill
               className="object-cover"
             />
