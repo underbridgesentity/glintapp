@@ -2,15 +2,15 @@
 export const CATALOG = {
   basic: {
     label: "Basic plan",
-    description: "Two exterior washes a month at your site.",
-    amountCents: 49900,
+    description: "4 exterior washes a month at your site.",
+    amountCents: 45000,
     recurring: true,
     plan: "basic",
   },
   premium: {
     label: "Premium plan",
-    description: "Four washes a month, interior and exterior.",
-    amountCents: 79900,
+    description: "8 washes a month, interior and exterior.",
+    amountCents: 75000,
     recurring: true,
     plan: "premium",
   },
