@@ -22,7 +22,7 @@ export default async function CustomerLayout({
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col sm:max-w-2xl">
-      <header className="glass sticky top-0 z-50 flex items-center justify-between border-x-0 border-t-0 px-6 py-4">
+      <header className="glass-strong sticky top-0 z-50 flex items-center justify-between border-x-0 border-t-0 px-6 py-4">
         <Link href="/app" aria-label="Glint home">
           <Wordmark className="text-2xl text-white" />
         </Link>
@@ -40,7 +40,7 @@ export default async function CustomerLayout({
         <div className="page-enter">{children}</div>
       </main>
 
-      <nav className="glass fixed inset-x-0 bottom-0 z-50 border-x-0 border-b-0">
+      <nav className="glass-strong fixed inset-x-0 bottom-0 z-50 border-x-0 border-b-0">
         <TabNav
           items={TABS}
           rootHref="/app"

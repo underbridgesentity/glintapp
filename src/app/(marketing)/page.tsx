@@ -73,49 +73,9 @@ const STATS: [string, string][] = [
   ["0", "minutes of your time required"],
 ];
 
-function Wordmark({ className = "" }: { className?: string }) {
-  return (
-    <span className={`wordmark ${className}`}>
-      Glint<span className="text-lemon">.</span>
-    </span>
-  );
-}
-
 export default function Marketing() {
   return (
     <main className="bg-carbon text-white">
-      {/* Nav */}
-      <header className="glass fixed inset-x-0 top-0 z-50 border-x-0 border-t-0">
-        <nav className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
-          <Link href="/" aria-label="Glint home">
-            <Wordmark className="text-3xl" />
-          </Link>
-          <div className="flex items-center gap-6 text-sm">
-            <a
-              href="#how"
-              className="hidden text-mist transition-colors duration-300 hover:text-white sm:block"
-            >
-              How it works
-            </a>
-            <a
-              href="#plans"
-              className="hidden text-mist transition-colors duration-300 hover:text-white sm:block"
-            >
-              Plans
-            </a>
-            <a
-              href="#sites"
-              className="hidden text-mist transition-colors duration-300 hover:text-white sm:block"
-            >
-              For sites
-            </a>
-            <Link href="/sign-in" className="btn-primary px-5 py-2 text-sm">
-              Sign in
-            </Link>
-          </div>
-        </nav>
-      </header>
-
       {/* Hero */}
       <section className="relative flex min-h-dvh items-end overflow-hidden">
         <div className="hero-drift absolute inset-0">
@@ -142,15 +102,15 @@ export default function Marketing() {
               Last cleaned: Today at 11:42
             </span>
           </div>
-          <h1 className="max-w-5xl text-5xl font-extrabold leading-[0.98] tracking-[-0.04em] sm:text-7xl lg:text-8xl xl:text-[9rem]">
+          <h1 className="max-w-4xl text-4xl font-extrabold leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
             <span className="hero-rise block" style={{ "--d": "0.1s" } as React.CSSProperties}>
-              Your car is clean.
+              You park.
             </span>
             <span className="hero-rise block" style={{ "--d": "0.25s" } as React.CSSProperties}>
-              You weren&apos;t there.
+              We wash.
             </span>
             <span className="hero-rise block text-lemon" style={{ "--d": "0.4s" } as React.CSSProperties}>
-              That&apos;s the point.
+              You drive home clean.
             </span>
           </h1>
           <div
@@ -410,7 +370,7 @@ export default function Marketing() {
               ))}
             </ul>
             <Link
-              href="/sign-in"
+              href="/partners"
               className="btn-secondary mt-10 inline-block px-8 py-4"
             >
               Partner with Glint
@@ -439,46 +399,6 @@ export default function Marketing() {
         </div>
       </section>
 
-      <footer className="border-t border-carbon-border bg-carbon-mid/40">
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:grid-cols-3">
-          <div>
-            <Wordmark className="text-3xl text-white" />
-            <p className="mt-4 max-w-xs text-sm text-mist">
-              Your car is cleaned while you work. Eco-friendly, water-efficient
-              methods at office parks and estates.
-            </p>
-          </div>
-          <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
-              Product
-            </p>
-            <ul className="mt-4 flex flex-col gap-2 text-sm text-mist">
-              <li><a href="#how" className="transition-colors hover:text-white">How it works</a></li>
-              <li><a href="#plans" className="transition-colors hover:text-white">Plans</a></li>
-              <li><a href="#sites" className="transition-colors hover:text-white">For estates and office parks</a></li>
-              <li><Link href="/sign-in" className="transition-colors hover:text-white">Sign in</Link></li>
-            </ul>
-          </div>
-          <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
-              Contact
-            </p>
-            <ul className="mt-4 flex flex-col gap-2 text-sm text-mist">
-              <li>Johannesburg, South Africa</li>
-              <li>
-                <a href="mailto:notifications@glintapp.co.za" className="transition-colors hover:text-white">
-                  notifications@glintapp.co.za
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="border-t border-carbon-border">
-          <p className="mx-auto max-w-6xl px-6 py-6 text-xs text-steel">
-            Glint. Eco-friendly, water-efficient car care.
-          </p>
-        </div>
-      </footer>
     </main>
   );
 }

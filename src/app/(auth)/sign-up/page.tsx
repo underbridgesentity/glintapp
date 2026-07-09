@@ -95,6 +95,12 @@ export default async function SignUpPage({
         >
           Create account
         </button>
+        <p className="text-xs text-steel">
+          Creating an account accepts our{" "}
+          <Link href="/terms" className="text-mist underline">terms of service</Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="text-mist underline">privacy policy</Link>.
+        </p>
       </form>
       </div>
 

@@ -312,23 +312,80 @@ export default async function HomePage() {
             Open fleet view <Icon name="arrowRight" size={16} />
           </Link>
         </section>
-      ) : myVehicles.length === 0 ? (
-        <section className="surface-1 rounded-card p-5">
+      ) : myVehicles.length === 0 ||
+        !subscription ||
+        (washesThisMonth === 0 && activeRows.length === 0) ? (
+        <section className="surface-2 rounded-card p-6">
           <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
             Get started
           </h2>
-          <p className="mt-3 text-lg font-semibold text-white">
-            No vehicles yet
+          <p className="mt-2 text-sm text-mist">
+            3 steps. About 2 minutes. Then you never think about it again.
           </p>
-          <p className="mt-1 text-sm text-mist">
-            Add 1 vehicle and book your first wash. 30 seconds.
-          </p>
-          <Link
-            href="/app/vehicles"
-            className="btn-primary mt-4 inline-flex items-center gap-2 px-6 py-3"
-          >
-            <Icon name="plus" size={16} /> Add a vehicle
-          </Link>
+          <ol className="mt-5 flex flex-col gap-3">
+            {[
+              {
+                done: myVehicles.length > 0,
+                title: "Add your vehicle",
+                sub: "Make, model, plate. 30 seconds.",
+                href: "/app/vehicles",
+                cta: "Add vehicle",
+              },
+              {
+                done: Boolean(subscription),
+                title: "Choose a plan",
+                sub: "Basic R450 or Premium R750. Cancel anytime.",
+                href: "/app/plan",
+                cta: "See plans",
+              },
+              {
+                done: washesThisMonth > 0 || activeRows.length > 0,
+                title: "Book your first wash",
+                sub: "Park like you always do. We handle the rest.",
+                href: "/app/book",
+                cta: "Book wash",
+              },
+            ].map((step, i) => (
+              <li
+                key={step.title}
+                className={`flex items-center gap-4 rounded-card border p-4 ${
+                  step.done
+                    ? "border-carbon-border bg-carbon"
+                    : "surface-1"
+                }`}
+              >
+                <span
+                  className={
+                    step.done ? "icon-chip icon-chip-lemon" : "icon-chip"
+                  }
+                >
+                  {step.done ? (
+                    <Icon name="check" size={16} />
+                  ) : (
+                    <span className="text-sm font-bold text-mist">{i + 1}</span>
+                  )}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={`text-sm font-semibold ${step.done ? "text-steel line-through" : "text-white"}`}
+                  >
+                    {step.title}
+                  </p>
+                  {!step.done ? (
+                    <p className="text-xs text-mist">{step.sub}</p>
+                  ) : null}
+                </div>
+                {!step.done ? (
+                  <Link
+                    href={step.href}
+                    className="btn-secondary shrink-0 px-4 py-2 text-xs"
+                  >
+                    {step.cta}
+                  </Link>
+                ) : null}
+              </li>
+            ))}
+          </ol>
         </section>
       ) : hero && hero.booking.status === "in_progress" ? (
         <section className="surface-2 halo rounded-card p-5">

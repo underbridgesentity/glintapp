@@ -20,7 +20,7 @@ export default async function OpsLayout({
   await requireRole(["ops_admin"]);
   return (
     <div className="mx-auto min-h-dvh max-w-5xl pb-16">
-      <div className="glass sticky top-0 z-50 border-x-0 border-t-0 px-4 sm:px-6">
+      <div className="glass-strong sticky top-0 z-50 border-x-0 border-t-0 px-4 sm:px-6">
         <header className="flex items-center justify-between py-4">
           <div className="flex items-baseline gap-2">
             <Wordmark className="text-2xl text-white" />

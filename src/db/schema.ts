@@ -359,6 +359,18 @@ export const messages = pgTable("messages", {
   ...timestamps,
 });
 
+// Inbound partner enquiries from the public marketing site.
+export const partnerLeads = pgTable("partner_leads", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  company: text("company").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  sites: text("sites"),
+  message: text("message"),
+  ...timestamps,
+});
+
 export const auditLog = pgTable("audit_log", {
   id: uuid("id").primaryKey().defaultRandom(),
   actorId: uuid("actor_id").references(() => users.id),

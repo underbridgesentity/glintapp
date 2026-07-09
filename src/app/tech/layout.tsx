@@ -24,7 +24,7 @@ export default async function TechLayout({
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-md flex-col sm:max-w-2xl">
-      <div className="glass sticky top-0 z-50 border-x-0 border-t-0 px-4 pb-3 pt-6">
+      <div className="glass-strong sticky top-0 z-50 border-x-0 border-t-0 px-4 pb-3 pt-6">
         <header className="flex items-center justify-between">
           <div>
             <Wordmark className="text-2xl text-white" />
