@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { requireRole } from "@/lib/guard";
 import { CUSTOMER_ROLES } from "@/lib/roles";
-import { signOutAction } from "@/app/(auth)/actions";
 import { Wordmark } from "@/components/wordmark";
+import { Icon } from "@/components/icons";
 import { TabNav, type TabItem } from "@/components/tab-nav";
 
 const TABS: TabItem[] = [
@@ -26,14 +26,13 @@ export default async function CustomerLayout({
         <Link href="/app" aria-label="Glint home">
           <Wordmark className="text-2xl text-white" />
         </Link>
-        <form action={signOutAction}>
-          <button
-            type="submit"
-            className="btn-secondary px-4 py-1.5 text-xs"
-          >
-            Sign out
-          </button>
-        </form>
+        <Link
+          href="/app/profile"
+          aria-label="Profile and settings"
+          className="icon-chip"
+        >
+          <Icon name="settings" size={18} />
+        </Link>
       </header>
 
       <main className="flex-1 px-6 pb-28 pt-6">

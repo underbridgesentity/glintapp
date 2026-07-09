@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { signUpAction } from "../actions";
 import { Wordmark } from "@/components/wordmark";
+import { marketingHomeHref } from "@/lib/marketing-url";
 
 export default async function SignUpPage({
   searchParams,
@@ -8,9 +9,10 @@ export default async function SignUpPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
+  const home = await marketingHomeHref();
   return (
     <main className="page-enter mx-auto flex min-h-dvh max-w-md flex-col justify-center px-6 py-12">
-      <Link href="/" aria-label="Glint home" className="mb-8">
+      <Link href={home} aria-label="Glint home" className="mb-8">
         <Wordmark className="text-3xl text-white" />
       </Link>
 

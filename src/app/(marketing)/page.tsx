@@ -93,15 +93,6 @@ export default function Marketing() {
           style={{ background: "linear-gradient(to top, var(--carbon), transparent)" }}
         />
         <div className="relative mx-auto w-full max-w-6xl px-6 pb-24 pt-44">
-          <div
-            className="glass glass-sheen hero-rise mb-8 inline-flex items-center gap-3 rounded-pill px-5 py-2.5"
-            style={{ "--d": "0.05s" } as React.CSSProperties}
-          >
-            <span className="h-2 w-2 rounded-pill bg-lemon" />
-            <span className="text-sm font-medium text-white">
-              Last cleaned: Today at 11:42
-            </span>
-          </div>
           <h1 className="max-w-4xl text-4xl font-extrabold leading-[1.04] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
             <span className="hero-rise block" style={{ "--d": "0.1s" } as React.CSSProperties}>
               You park.

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { and, eq, isNull } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
+import bcrypt from "bcryptjs";
 import {
   vehicles,
   bookings,
@@ -13,6 +14,7 @@ import {
   escalations,
   notifications,
   auditLog,
+  users,
 } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
 import { CUSTOMER_ROLES } from "@/lib/roles";
@@ -387,4 +389,90 @@ export async function sendSupportMessageAction(formData: FormData) {
   });
 
   revalidatePath("/app/support");
+}
+
+// --- Profile ---
+
+const profileSchema = z.object({
+  name: z.string().min(2).max(120),
+  phone: z.string().max(30).optional().or(z.literal("")),
+});
+
+export async function updateProfileAction(formData: FormData) {
+  const session = await requireRole(CUSTOMER_ROLES);
+  const parsed = profileSchema.safeParse({
+    name: formData.get("name"),
+    phone: formData.get("phone"),
+  });
+  if (!parsed.success) redirect("/app/profile?error=profile");
+
+  await db
+    .update(users)
+    .set({
+      name: parsed.data.name,
+      phone: parsed.data.phone || null,
+      updatedAt: new Date(),
+    })
+    .where(eq(users.id, session.user.id));
+
+  revalidatePath("/app/profile");
+  redirect("/app/profile?saved=profile");
+}
+
+export async function updateNotificationPrefsAction(formData: FormData) {
+  const session = await requireRole(CUSTOMER_ROLES);
+  const prefs = {
+    washDone: formData.get("washDone") === "on",
+    washStarted: formData.get("washStarted") === "on",
+    billing: formData.get("billing") === "on",
+  };
+
+  await db
+    .update(users)
+    .set({ notificationPrefs: prefs, updatedAt: new Date() })
+    .where(eq(users.id, session.user.id));
+
+  revalidatePath("/app/profile");
+  redirect("/app/profile?saved=prefs");
+}
+
+const passwordSchema = z.object({
+  current: z.string().min(8).max(200),
+  next: z.string().min(8).max(200),
+});
+
+export async function changePasswordAction(formData: FormData) {
+  const session = await requireRole(CUSTOMER_ROLES);
+  const parsed = passwordSchema.safeParse({
+    current: formData.get("current"),
+    next: formData.get("next"),
+  });
+  if (!parsed.success) redirect("/app/profile?error=password");
+
+  const [user] = await db
+    .select({ passwordHash: users.passwordHash })
+    .from(users)
+    .where(eq(users.id, session.user.id))
+    .limit(1);
+  const ok =
+    user && (await bcrypt.compare(parsed.data.current, user.passwordHash));
+  if (!ok) redirect("/app/profile?error=password");
+
+  await db
+    .update(users)
+    .set({
+      passwordHash: await bcrypt.hash(parsed.data.next, 10),
+      updatedAt: new Date(),
+    })
+    .where(eq(users.id, session.user.id));
+
+  await db.insert(auditLog).values({
+    actorId: session.user.id,
+    action: "user.password_changed",
+    entity: "users",
+    entityId: session.user.id,
+  });
+
+  revalidatePath("/app/profile");
+  redirect("/app/profile?saved=password");
 }

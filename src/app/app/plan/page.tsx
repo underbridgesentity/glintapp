@@ -131,12 +131,23 @@ export default async function PlanPage({
         })}
       </section>
 
+      <section className="surface-1 rounded-card p-5">
+        <p className="font-semibold text-white">Payment method</p>
+        <p className="mt-1 text-xs text-mist">
+          {subscription?.payfastToken
+            ? "Card on file with PayFast. Billing runs automatically each month."
+            : "No card on file. Your card is captured securely by PayFast — Glint never stores card numbers."}
+        </p>
+        <Link
+          href="/pay/checkout"
+          className="btn-secondary mt-3 inline-block px-6 py-2.5 text-sm"
+        >
+          {subscription?.payfastToken ? "Update card at checkout" : "Add payment method"}
+        </Link>
+      </section>
+
       <p className="text-xs text-steel">
-        Payment is set up at{" "}
-        <a href="/pay/checkout" className="underline underline-offset-4">
-          checkout
-        </a>
-        . Your plan starts once payment clears.
+        Your plan starts once payment clears.
       </p>
     </div>
   );
