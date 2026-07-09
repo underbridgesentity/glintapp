@@ -36,7 +36,7 @@ Positioning: **Glint sells time. The clean car is proof it worked.**
 - Auth.js (NextAuth v5), email + password to start, session-based, role-aware
 - Tailwind CSS, dark only, brand tokens as CSS variables
 - **Payments: PayFast** (live v1) behind a `PaymentProvider` interface; Yoco addable later. ITN webhook must validate signature, host, and amount, and be idempotent. Client-reported success is never trusted.
-- **Notifications: DB-logged for v1.** WhatsApp is out of scope for v1, added later via Twilio behind the `NotificationService` interface.
+- **Notifications: DB-logged, plus email via Resend.** Every event writes a `notifications` row (the in-app feed) and, behind the same `NotificationService` interface, sends a branded transactional email via Resend (domain `glintapp.co.za`), respecting per-user `notificationPrefs`. *Amendment (2026-07-09, owner added Resend + domain.)* WhatsApp remains out of scope for v1, added later via Twilio behind the same interface. Email delivery is best-effort and never blocks a booking, payment, or wash-completion flow.
 - Imagery generated at build time via Magnific / Freepik MCP; stored in Blob.
 
 ---

@@ -18,6 +18,7 @@ import {
 } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
 import { insertMessage } from "@/lib/support";
+import { notificationService } from "@/lib/notifications";
 
 async function log(
   actorId: string,
@@ -188,6 +189,13 @@ export async function sendOpsReplyAction(formData: FormData) {
     senderId: session.user.id,
     senderRole: "ops",
     body: parsed.data.body,
+  });
+
+  // Notify the customer (in-app row + email) that support replied.
+  await notificationService.send({
+    recipientId: parsed.data.customerId,
+    template: "support_reply",
+    payload: {},
   });
 
   revalidatePath("/ops/support");
