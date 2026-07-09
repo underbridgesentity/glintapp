@@ -6,9 +6,9 @@ import { marketingHomeHref } from "@/lib/marketing-url";
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; callbackUrl?: string }>;
+  searchParams: Promise<{ error?: string; callbackUrl?: string; reset?: string }>;
 }) {
-  const { error, callbackUrl } = await searchParams;
+  const { error, callbackUrl, reset } = await searchParams;
   const home = await marketingHomeHref();
   return (
     <main className="page-enter mx-auto flex min-h-dvh max-w-md flex-col justify-center px-6">
@@ -23,6 +23,11 @@ export default async function SignInPage({
         {error ? (
           <p className="mt-4 rounded-card border border-carbon-border bg-carbon-raise px-4 py-3 text-sm text-white">
             Wrong email or password. Try again.
+          </p>
+        ) : null}
+        {reset === "1" ? (
+          <p className="mt-4 rounded-card border border-[var(--lemon-border)] bg-lemon-dim px-4 py-3 text-sm text-white">
+            Password updated. Sign in with the new one.
           </p>
         ) : null}
 
@@ -58,6 +63,12 @@ export default async function SignInPage({
           >
             Sign in
           </button>
+          <Link
+            href="/forgot-password"
+            className="text-sm text-mist underline underline-offset-4 hover:text-white"
+          >
+            Forgot password?
+          </Link>
         </form>
       </div>
 
@@ -66,6 +77,11 @@ export default async function SignInPage({
         <Link href="/sign-up" className="font-semibold text-white underline">
           Create an account
         </Link>
+      </p>
+      <p className="mt-2 text-xs text-steel">
+        <Link href="/terms" className="underline hover:text-mist">Terms of service</Link>
+        {" · "}
+        <Link href="/privacy" className="underline hover:text-mist">Privacy policy</Link>
       </p>
     </main>
   );

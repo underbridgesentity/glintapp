@@ -18,6 +18,8 @@ function emailPrefKey(template: string): string | null {
   switch (template) {
     case "wash_done":
       return "washDone";
+    case "wash_started":
+      return "washStarted";
     case "payment_received":
     case "fleet_summary":
       return "billing";

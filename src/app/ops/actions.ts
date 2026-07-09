@@ -15,6 +15,7 @@ import {
   siteRequirements,
   sites,
   users,
+  vehicles,
 } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
 import { insertMessage } from "@/lib/support";
@@ -162,6 +163,24 @@ export async function updateEscalationStatus(formData: FormData) {
           scheduledDate: today,
         },
       );
+
+      // Tell the customer we're making it right — always, this is service
+      // recovery, not marketing.
+      const [v] = await db
+        .select()
+        .from(vehicles)
+        .where(eq(vehicles.id, origin.vehicleId))
+        .limit(1);
+      if (v) {
+        await notificationService.send({
+          recipientId: v.ownerId,
+          template: "re_wash_scheduled",
+          payload: {
+            bookingId: reWash.id,
+            vehicle: `${v.colour} ${v.make} ${v.model}`,
+          },
+        });
+      }
     }
   }
 

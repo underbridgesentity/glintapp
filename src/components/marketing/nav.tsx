@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/wordmark";
+import { MobileMenu } from "@/components/marketing/mobile-menu";
 
 const LINKS = [
   { href: "/how-it-works", label: "How it works" },
@@ -28,6 +29,7 @@ export function MarketingNav() {
           <Link href="/sign-in" className="btn-primary px-5 py-2 text-sm">
             Sign in
           </Link>
+          <MobileMenu links={LINKS} />
         </div>
       </nav>
     </header>

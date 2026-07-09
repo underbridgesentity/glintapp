@@ -102,3 +102,96 @@ export async function signOutAction() {
   const { signOut } = await import("@/auth");
   await signOut({ redirectTo: "/" });
 }
+
+// --- Password reset ---
+// Request: never reveals whether an email exists. Token: 32 random bytes,
+// only the SHA-256 hash stored, 30-minute expiry, single use.
+
+const requestResetSchema = z.object({ email: z.string().email() });
+
+export async function requestPasswordResetAction(formData: FormData) {
+  const parsed = requestResetSchema.safeParse({ email: formData.get("email") });
+  // Uniform response either way — no user enumeration.
+  if (!parsed.success) redirect("/forgot-password?sent=1");
+
+  const [user] = await db
+    .select({ id: users.id, name: users.name, email: users.email })
+    .from(users)
+    .where(eq(users.email, parsed.data.email))
+    .limit(1);
+
+  if (user) {
+    const { randomBytes, createHash } = await import("crypto");
+    const token = randomBytes(32).toString("hex");
+    const { passwordResetTokens } = await import("@/db/schema");
+    await db.insert(passwordResetTokens).values({
+      userId: user.id,
+      tokenHash: createHash("sha256").update(token).digest("hex"),
+      expiresAt: new Date(Date.now() + 30 * 60 * 1000),
+    });
+
+    const { sendEmail } = await import("@/lib/email/resend");
+    const { renderEmail } = await import("@/lib/email/templates");
+    const base = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+    const email = renderEmail(
+      "password_reset",
+      { resetUrl: `${base}/reset-password?token=${token}` },
+      user.name
+    );
+    if (email) await sendEmail({ to: user.email, ...email });
+  }
+
+  redirect("/forgot-password?sent=1");
+}
+
+const resetSchema = z.object({
+  token: z.string().regex(/^[a-f0-9]{64}$/),
+  password: z.string().min(8).max(200),
+});
+
+export async function resetPasswordAction(formData: FormData) {
+  const parsed = resetSchema.safeParse({
+    token: formData.get("token"),
+    password: formData.get("password"),
+  });
+  if (!parsed.success) redirect("/forgot-password?sent=expired");
+
+  const { createHash } = await import("crypto");
+  const { passwordResetTokens } = await import("@/db/schema");
+  const { and, isNull, gt } = await import("drizzle-orm");
+  const tokenHash = createHash("sha256").update(parsed.data.token).digest("hex");
+
+  const [row] = await db
+    .select()
+    .from(passwordResetTokens)
+    .where(
+      and(
+        eq(passwordResetTokens.tokenHash, tokenHash),
+        isNull(passwordResetTokens.usedAt),
+        gt(passwordResetTokens.expiresAt, new Date())
+      )
+    )
+    .limit(1);
+  if (!row) redirect("/forgot-password?sent=expired");
+
+  await db
+    .update(users)
+    .set({
+      passwordHash: await bcrypt.hash(parsed.data.password, 10),
+      updatedAt: new Date(),
+    })
+    .where(eq(users.id, row.userId));
+  await db
+    .update(passwordResetTokens)
+    .set({ usedAt: new Date() })
+    .where(eq(passwordResetTokens.id, row.id));
+
+  await db.insert(auditLog).values({
+    actorId: row.userId,
+    action: "user.password_reset",
+    entity: "users",
+    entityId: row.userId,
+  });
+
+  redirect("/sign-in?reset=1");
+}

@@ -119,6 +119,54 @@ export function renderEmail(
         text: `${first}, we saw your rating and are arranging a re-wash. History: ${appUrl("/app/history")}`,
       };
     }
+    case "password_reset": {
+      const url = String(payload.resetUrl ?? appUrl("/forgot-password"));
+      return {
+        subject: "Reset your Glint password",
+        html: layout({
+          preheader: "Set a new password. The link works once, for 30 minutes.",
+          heading: "Reset your password",
+          lines: [
+            `${first}, someone asked to reset the password for this account.`,
+            "The link below works once and expires in 30 minutes. If this wasn't you, ignore this email — your password stays as it is.",
+          ],
+          cta: { label: "Set a new password", url },
+        }),
+        text: `${first}, reset your Glint password (valid 30 minutes, single use): ${url}`,
+      };
+    }
+    case "wash_started": {
+      const vehicle = String(payload.vehicle ?? "Your car");
+      return {
+        subject: "Your wash has started",
+        html: layout({
+          preheader: `${vehicle} is being washed now.`,
+          heading: "Your wash has started",
+          lines: [
+            `${first}, a technician has started on ${vehicle}.`,
+            "Track each step live in the app.",
+          ],
+          cta: { label: "Track your wash", url: appUrl("/app") },
+        }),
+        text: `${first}, a technician has started on ${vehicle}. Track it: ${appUrl("/app")}`,
+      };
+    }
+    case "re_wash_scheduled": {
+      const vehicle = String(payload.vehicle ?? "your car");
+      return {
+        subject: "We're re-washing your car",
+        html: layout({
+          preheader: "A re-wash is booked at no charge.",
+          heading: "We're making it right",
+          lines: [
+            `${first}, a re-wash for ${vehicle} is booked at no charge.`,
+            "You'll get the usual notification when it's done.",
+          ],
+          cta: { label: "See your washes", url: appUrl("/app") },
+        }),
+        text: `${first}, a re-wash for ${vehicle} is booked at no charge.`,
+      };
+    }
     case "wash_done": {
       const vehicle = String(payload.vehicle ?? "Your car");
       const time = String(payload.time ?? "");

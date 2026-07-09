@@ -74,6 +74,24 @@ export async function claimBookingAction(formData: FormData) {
     actorId: session.user.id,
   });
 
+  // Wash-started notice: in-app row always; email only when the owner has
+  // opted in (washStarted pref, default off).
+  const [startedVehicle] = await db
+    .select()
+    .from(vehicles)
+    .where(eq(vehicles.id, booking.vehicleId))
+    .limit(1);
+  if (startedVehicle) {
+    await notificationService.send({
+      recipientId: startedVehicle.ownerId,
+      template: "wash_started",
+      payload: {
+        bookingId: booking.id,
+        vehicle: `${startedVehicle.colour} ${startedVehicle.make} ${startedVehicle.model}`,
+      },
+    });
+  }
+
   revalidatePath("/tech");
   redirect(`/tech/wash/${booking.id}`);
 }

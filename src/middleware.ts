@@ -18,6 +18,8 @@ const APP_PATH_PREFIXES = [
   "/pay",
   "/sign-in",
   "/sign-up",
+  "/forgot-password",
+  "/reset-password",
 ];
 
 export async function middleware(req: NextRequest) {
@@ -74,5 +76,7 @@ export const config = {
     "/pay/:path*",
     "/sign-in",
     "/sign-up",
+    "/forgot-password",
+    "/reset-password",
   ],
 };

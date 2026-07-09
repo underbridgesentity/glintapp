@@ -371,6 +371,19 @@ export const partnerLeads = pgTable("partner_leads", {
   ...timestamps,
 });
 
+// Single-use password reset tokens. Only the SHA-256 hash is stored — a DB
+// read can never recover a live reset link. Rows are append-only and expire.
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id),
+  tokenHash: text("token_hash").notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  usedAt: timestamp("used_at"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 // Inbound messages from the public contact page. topic routes triage:
 // "coverage" rows are demand capture (where to launch next).
 export const contactMessages = pgTable("contact_messages", {
