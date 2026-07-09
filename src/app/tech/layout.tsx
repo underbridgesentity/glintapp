@@ -3,6 +3,7 @@ import { requireRole } from "@/lib/guard";
 import { FIELD_ROLES } from "@/lib/roles";
 import { signOutAction } from "@/app/(auth)/actions";
 import { Wordmark } from "@/components/wordmark";
+import { Icon } from "@/components/icons";
 import { assignedSiteFor } from "./data";
 
 export default async function TechLayout({
@@ -37,21 +38,24 @@ export default async function TechLayout({
         <nav className="mt-4 flex gap-2">
           <Link
             href="/tech"
-            className="btn-press rounded-pill bg-carbon-raise px-4 py-2 text-sm font-medium text-white"
+            className="btn-press inline-flex items-center gap-2 rounded-pill bg-carbon-raise px-4 py-2 text-sm font-medium text-white"
           >
+            <Icon name="list" size={16} className="text-mist" />
             Queue
           </Link>
           <Link
             href="/tech/keys"
-            className="btn-press rounded-pill bg-carbon-raise px-4 py-2 text-sm font-medium text-white"
+            className="btn-press inline-flex items-center gap-2 rounded-pill bg-carbon-raise px-4 py-2 text-sm font-medium text-white"
           >
+            <Icon name="key" size={16} className="text-mist" />
             Keys
           </Link>
           {isLead ? (
             <Link
               href="/tech/report"
-              className="btn-press rounded-pill bg-carbon-raise px-4 py-2 text-sm font-medium text-white"
+              className="btn-press inline-flex items-center gap-2 rounded-pill bg-carbon-raise px-4 py-2 text-sm font-medium text-white"
             >
+              <Icon name="gauge" size={16} className="text-mist" />
               Report
             </Link>
           ) : null}

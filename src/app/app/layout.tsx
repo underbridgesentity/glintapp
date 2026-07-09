@@ -3,12 +3,14 @@ import { requireRole } from "@/lib/guard";
 import { CUSTOMER_ROLES } from "@/lib/roles";
 import { signOutAction } from "@/app/(auth)/actions";
 import { Wordmark } from "@/components/wordmark";
+import { Icon, type IconName } from "@/components/icons";
 
-const TABS = [
-  { href: "/app", label: "Home" },
-  { href: "/app/vehicles", label: "Vehicles" },
-  { href: "/app/history", label: "History" },
-  { href: "/app/plan", label: "Plan" },
+const TABS: { href: string; label: string; icon: IconName }[] = [
+  { href: "/app", label: "Home", icon: "home" },
+  { href: "/app/vehicles", label: "Vehicles", icon: "car" },
+  { href: "/app/history", label: "History", icon: "list" },
+  { href: "/app/plan", label: "Plan", icon: "creditCard" },
+  { href: "/app/support", label: "Support", icon: "message" },
 ];
 
 export default async function CustomerLayout({
@@ -37,13 +39,14 @@ export default async function CustomerLayout({
       <main className="flex-1 px-6 pb-28 pt-6">{children}</main>
 
       <nav className="glass fixed inset-x-0 bottom-0 z-50 border-x-0 border-b-0">
-        <div className="mx-auto flex max-w-md justify-between px-6 py-3 sm:max-w-2xl">
+        <div className="mx-auto flex max-w-md justify-between px-4 py-2.5 sm:max-w-2xl">
           {TABS.map((tab) => (
             <Link
               key={tab.href}
               href={tab.href}
-              className="rounded-pill px-3 py-1.5 text-xs font-medium text-mist transition-colors duration-300 hover:text-white"
+              className="flex flex-1 flex-col items-center gap-1 rounded-card px-2 py-1 text-[10px] font-medium text-mist transition-colors duration-300 hover:text-white"
             >
+              <Icon name={tab.icon} size={20} />
               {tab.label}
             </Link>
           ))}

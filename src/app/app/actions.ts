@@ -17,6 +17,7 @@ import {
 import { requireRole } from "@/lib/guard";
 import { CUSTOMER_ROLES } from "@/lib/roles";
 import { notificationService } from "@/lib/notifications";
+import { insertMessage } from "@/lib/support";
 import { PLAN_PRICING } from "./pricing";
 
 async function ownedVehicle(vehicleId: string, userId: string) {
@@ -363,4 +364,27 @@ export async function selectPlanAction(formData: FormData) {
 
   revalidatePath("/app/plan");
   redirect("/app/plan?saved=1");
+}
+
+// --- Support (human chat, DB-logged, no AI) ---
+
+const supportMessageSchema = z.object({
+  body: z.string().trim().min(1).max(2000),
+});
+
+export async function sendSupportMessageAction(formData: FormData) {
+  const session = await requireRole(CUSTOMER_ROLES);
+  const parsed = supportMessageSchema.safeParse({
+    body: formData.get("body"),
+  });
+  if (!parsed.success) return;
+
+  await insertMessage({
+    customerId: session.user.id,
+    senderId: session.user.id,
+    senderRole: "customer",
+    body: parsed.data.body,
+  });
+
+  revalidatePath("/app/support");
 }

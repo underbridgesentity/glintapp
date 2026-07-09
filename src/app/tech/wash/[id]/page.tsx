@@ -5,8 +5,13 @@ import { db } from "@/db";
 import { bookings, qualityChecks, vehicles } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
 import { FIELD_ROLES } from "@/lib/roles";
+import { Icon } from "@/components/icons";
 import { assignedSiteFor } from "../../data";
-import { markDoneAction, saveChecklistAction } from "../../actions";
+import {
+  markArrivedAction,
+  markDoneAction,
+  saveChecklistAction,
+} from "../../actions";
 import { CHECKLIST_POINTS } from "../../checklist";
 
 export default async function WashPage({
@@ -76,12 +81,29 @@ export default async function WashPage({
         <p className="text-mist">Wash complete. Nothing more to do here.</p>
       ) : (
         <>
+          {booking.status === "in_progress" ? (
+            <form action={markArrivedAction}>
+              <input type="hidden" name="bookingId" value={booking.id} />
+              <button
+                type="submit"
+                className="btn-press inline-flex w-full items-center justify-center gap-2 rounded-pill border border-carbon-border bg-carbon-raise px-6 py-3 font-semibold text-white"
+              >
+                <Icon name="mapPin" size={18} className="text-mist" />
+                On site
+              </button>
+              <p className="mt-2 text-center text-xs text-steel">
+                Marks your arrival on the wash timeline.
+              </p>
+            </form>
+          ) : null}
+
           <form
             action={saveChecklistAction}
             className="rounded-card border border-carbon-border bg-carbon-mid p-4"
           >
             <input type="hidden" name="bookingId" value={booking.id} />
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+            <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+              <Icon name="checkCircle" size={14} className="text-steel" />
               15-point checklist
             </h3>
             <ul className="mt-3 flex flex-col divide-y divide-carbon-border">
@@ -130,7 +152,8 @@ export default async function WashPage({
               className="rounded-card border border-carbon-border bg-carbon-mid p-4"
             >
               <input type="hidden" name="bookingId" value={booking.id} />
-              <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+              <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+                <Icon name="camera" size={14} className="text-steel" />
                 Finish
               </h3>
               <label className="mt-3 block text-sm text-mist">

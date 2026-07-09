@@ -2,13 +2,15 @@ import Link from "next/link";
 import { requireRole } from "@/lib/guard";
 import { signOutAction } from "../(auth)/actions";
 import { Wordmark } from "@/components/wordmark";
+import { Icon, type IconName } from "@/components/icons";
 
-const NAV = [
-  { href: "/ops", label: "Dashboard" },
-  { href: "/ops/escalations", label: "Escalations" },
-  { href: "/ops/audits", label: "Audits" },
-  { href: "/ops/sites", label: "Sites" },
-  { href: "/ops/team", label: "Team" },
+const NAV: { href: string; label: string; icon: IconName }[] = [
+  { href: "/ops", label: "Dashboard", icon: "gauge" },
+  { href: "/ops/escalations", label: "Escalations", icon: "alert" },
+  { href: "/ops/audits", label: "Audits", icon: "shield" },
+  { href: "/ops/sites", label: "Sites", icon: "building" },
+  { href: "/ops/team", label: "Team", icon: "users" },
+  { href: "/ops/support", label: "Support", icon: "message" },
 ];
 
 export default async function OpsLayout({
@@ -41,8 +43,9 @@ export default async function OpsLayout({
             <Link
               key={item.href}
               href={item.href}
-              className="whitespace-nowrap rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
+              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
             >
+              <Icon name={item.icon} size={15} />
               {item.label}
             </Link>
           ))}

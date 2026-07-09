@@ -2,6 +2,9 @@ import { and, count, eq, gte, isNull, lt } from "drizzle-orm";
 import { db } from "@/db";
 import { bookings, profiles, sites, subscriptions } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
+import { StatTile } from "@/components/ui/stat-tile";
+import { BarChart, Meter } from "@/components/ui/charts";
+import { Icon } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -67,6 +70,15 @@ export default async function PartnerDashboard() {
     }),
   );
 
+  const totalWashes = rows.reduce((a, r) => a + r.washes, 0);
+  const totalSubscribers = rows.reduce((a, r) => a + r.subscribers, 0);
+  const totalCapacity = rows.reduce(
+    (a, r) => a + r.dailyTarget * daysElapsed,
+    0,
+  );
+  const overallUtilisation =
+    totalCapacity > 0 ? Math.round((totalWashes / totalCapacity) * 100) : 0;
+
   return (
     <div className="flex flex-col gap-6 pt-4">
       <h1 className="text-2xl font-bold tracking-[-0.025em]">
@@ -82,44 +94,94 @@ export default async function PartnerDashboard() {
           No sites are linked to your account yet. Contact Glint ops.
         </p>
       ) : (
-        <ul className="flex flex-col gap-3">
-          {rows.map((s) => (
-            <li
-              key={s.id}
-              className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4"
-            >
-              <p className="font-semibold text-white">{s.name}</p>
-              <div className="mt-3 grid grid-cols-3 gap-3 text-center">
-                <div>
-                  <p className="text-xl font-semibold text-white">{s.washes}</p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
-                    Washes
-                  </p>
+        <>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <StatTile
+              label="Washes"
+              value={String(totalWashes)}
+              icon="droplet"
+              sub="this month"
+              accent
+            />
+            <StatTile
+              label="Subscribers"
+              value={String(totalSubscribers)}
+              icon="users"
+              sub="active"
+            />
+            <StatTile
+              label="Utilisation"
+              value={`${overallUtilisation}%`}
+              icon="gauge"
+              sub="of capacity"
+            />
+          </div>
+
+          <div className="rounded-card border border-carbon-border bg-carbon-mid p-4">
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+              Washes per site
+            </p>
+            <div className="mt-4">
+              <BarChart
+                data={rows.map((r) => ({ label: r.name, value: r.washes }))}
+              />
+            </div>
+          </div>
+
+          <ul className="flex flex-col gap-3">
+            {rows.map((s) => (
+              <li
+                key={s.id}
+                className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-mist">
+                    <Icon name="building" size={18} />
+                  </span>
+                  <p className="font-semibold text-white">{s.name}</p>
                 </div>
-                <div>
-                  <p className="text-xl font-semibold text-white">
-                    {s.subscribers}
-                  </p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
-                    Subscribers
-                  </p>
+                <div className="mt-3 grid grid-cols-3 gap-3 text-center">
+                  <div>
+                    <p className="text-xl font-semibold text-white">
+                      {s.washes}
+                    </p>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+                      Washes
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-semibold text-white">
+                      {s.subscribers}
+                    </p>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+                      Subscribers
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xl font-semibold text-white">
+                      {s.utilisationPct}%
+                    </p>
+                    <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+                      Utilisation
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xl font-semibold text-white">
-                    {s.utilisationPct}%
-                  </p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
-                    Utilisation
-                  </p>
+                <div className="mt-4">
+                  <Meter
+                    value={s.washes}
+                    max={s.dailyTarget * daysElapsed}
+                    label="Utilisation vs target"
+                    right={`${s.utilisationPct}%`}
+                  />
                 </div>
-              </div>
-              <p className="mt-3 text-xs text-steel">
-                Utilisation = completed washes / ({s.dailyTarget} per day ×{" "}
-                {daysElapsed} days).
-              </p>
-            </li>
-          ))}
-        </ul>
+                <p className="mt-3 text-xs text-steel">
+                  Utilisation = completed washes / ({s.dailyTarget} per day ×{" "}
+                  {daysElapsed} days).
+                </p>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   );

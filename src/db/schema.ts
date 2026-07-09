@@ -77,6 +77,25 @@ export const notificationStatusEnum = pgEnum("notification_status", [
   "failed",
 ]);
 
+// Granular wash timeline — powers the customer live tracker.
+export const washEventKindEnum = pgEnum("wash_event_kind", [
+  "booked",
+  "queued",
+  "claimed",
+  "arrived",
+  "in_progress",
+  "checklist_progress",
+  "photos_uploaded",
+  "complete",
+  "re_wash",
+]);
+
+// Human support chat (no AI). Customer <-> ops, optionally about a wash.
+export const messageSenderRoleEnum = pgEnum("message_sender_role", [
+  "customer",
+  "ops",
+]);
+
 const timestamps = {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -307,6 +326,36 @@ export const mysteryShopperAudits = pgTable("mystery_shopper_audits", {
     .references(() => users.id),
   score: integer("score").notNull(),
   findings: text("findings").notNull(),
+  ...timestamps,
+});
+
+// Append-only wash timeline. Each meaningful step writes one row so the
+// customer can see where the wash is and how it's going.
+export const washEvents = pgTable("wash_events", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  bookingId: uuid("booking_id")
+    .notNull()
+    .references(() => bookings.id),
+  kind: washEventKindEnum("kind").notNull(),
+  note: text("note"),
+  progress: integer("progress"), // 0-15 checklist points, when relevant
+  actorId: uuid("actor_id").references(() => users.id),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// Support conversation. One logical thread per customer; ops replies in it.
+export const messages = pgTable("messages", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  customerId: uuid("customer_id")
+    .notNull()
+    .references(() => users.id),
+  bookingId: uuid("booking_id").references(() => bookings.id),
+  senderId: uuid("sender_id")
+    .notNull()
+    .references(() => users.id),
+  senderRole: messageSenderRoleEnum("sender_role").notNull(),
+  body: text("body").notNull(),
+  readAt: timestamp("read_at"),
   ...timestamps,
 });
 

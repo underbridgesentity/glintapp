@@ -1,8 +1,10 @@
+import { cookies } from "next/headers";
 import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import { bookings, keyManagement } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
 import { FIELD_ROLES } from "@/lib/roles";
+import { Icon } from "@/components/icons";
 import { assignedSiteFor } from "../data";
 import {
   generateOtpAction,
@@ -20,11 +22,7 @@ function stamp(d: Date | null) {
   });
 }
 
-export default async function KeysPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ otp?: string; tag?: string }>;
-}) {
+export default async function KeysPage() {
   const session = await requireRole(FIELD_ROLES);
   const site = await assignedSiteFor(session.user.id);
   if (!site) {
@@ -35,7 +33,10 @@ export default async function KeysPage({
     );
   }
 
-  const { otp, tag } = await searchParams;
+  // Read the one-time code from the short-lived httpOnly cookie set by
+  // generateOtpAction — never from the URL.
+  const flash = (await cookies()).get("glint_otp_flash")?.value;
+  const [otp, tag] = flash ? flash.split(":") : [undefined, undefined];
 
   const rows = await db
     .select({ key: keyManagement, bookingStatus: bookings.status })
@@ -74,7 +75,10 @@ export default async function KeysPage({
               className="rounded-card border border-carbon-border bg-carbon-mid p-4"
             >
               <div className="flex items-center justify-between">
-                <p className="font-semibold text-white">Tag {key.keyTagCode}</p>
+                <p className="flex items-center gap-2 font-semibold text-white">
+                  <Icon name="key" size={16} className="text-mist" />
+                  Tag {key.keyTagCode}
+                </p>
                 <span className="rounded-pill bg-carbon-raise px-4 py-1 text-xs text-mist">
                   {bookingStatus.replace("_", " ")}
                 </span>

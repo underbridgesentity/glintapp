@@ -2,6 +2,9 @@ import { and, eq, isNull } from "drizzle-orm";
 import { db } from "@/db";
 import { bookings, escalations, profiles, users } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
+import { Icon } from "@/components/icons";
+import { StatTile } from "@/components/ui/stat-tile";
+import { Meter } from "@/components/ui/charts";
 import { assignedSiteFor } from "../data";
 import { todayInJohannesburg } from "../checklist";
 
@@ -58,49 +61,78 @@ export default async function ReportPage() {
   const unresolved = openEscalations.filter((e) => e.status !== "resolved");
 
   return (
-    <div className="flex flex-col gap-6">
-      <section className="rounded-card border border-carbon-border bg-carbon-mid p-4">
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
-          Today
-        </h2>
-        <p className="mt-2 text-3xl font-bold text-white">
-          {completes.length} of {site.dailyTarget}
-        </p>
-        <p className="text-sm text-mist">
-          Washes complete against the daily target. {todays.length} booked
-          today.
-        </p>
+    <div className="flex flex-col gap-8">
+      <section>
+        <div className="flex items-center gap-2">
+          <Icon name="gauge" size={14} className="text-steel" />
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+            Today
+          </h2>
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <StatTile
+            label="Complete"
+            value={String(completes.length)}
+            icon="droplet"
+            sub={`of ${site.dailyTarget} target`}
+            accent
+          />
+          <StatTile
+            label="Booked"
+            value={String(todays.length)}
+            icon="calendar"
+            sub="today"
+          />
+          <StatTile
+            label="Escalations"
+            value={String(unresolved.length)}
+            icon="alert"
+            sub="open"
+          />
+        </div>
+        <div className="mt-4 rounded-card border border-carbon-border bg-carbon-mid p-4">
+          <Meter
+            value={completes.length}
+            max={site.dailyTarget}
+            label="Daily target"
+            right={`${completes.length}/${site.dailyTarget}`}
+          />
+        </div>
       </section>
 
       <section>
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
-          Per technician
-        </h2>
+        <div className="flex items-center gap-2">
+          <Icon name="users" size={14} className="text-steel" />
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+            Per technician
+          </h2>
+        </div>
         {perTech.length === 0 ? (
           <p className="mt-2 text-sm text-mist">
             No technicians assigned to this site.
           </p>
         ) : (
-          <ul className="mt-3 flex flex-col gap-2">
+          <div className="mt-3 flex flex-col gap-4 rounded-card border border-carbon-border bg-carbon-mid p-4">
             {perTech.map((t) => (
-              <li
+              <Meter
                 key={t.id}
-                className="flex items-center justify-between rounded-card border border-carbon-border bg-carbon-mid p-3"
-              >
-                <span className="text-sm text-white">{t.name}</span>
-                <span className="text-sm text-mist">
-                  {t.completes} complete
-                </span>
-              </li>
+                value={t.completes}
+                max={site.dailyTarget}
+                label={t.name}
+                right={`${t.completes} done`}
+              />
             ))}
-          </ul>
+          </div>
         )}
       </section>
 
       <section>
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
-          Escalations
-        </h2>
+        <div className="flex items-center gap-2">
+          <Icon name="alert" size={14} className="text-steel" />
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+            Escalations
+          </h2>
+        </div>
         {unresolved.length === 0 ? (
           <p className="mt-2 text-sm text-mist">No open escalations.</p>
         ) : (
@@ -121,9 +153,12 @@ export default async function ReportPage() {
       </section>
 
       <section>
-        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
-          Roster
-        </h2>
+        <div className="flex items-center gap-2">
+          <Icon name="users" size={14} className="text-steel" />
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+            Roster
+          </h2>
+        </div>
         {roster.length === 0 ? (
           <p className="mt-2 text-sm text-mist">No staff assigned yet.</p>
         ) : (

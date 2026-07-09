@@ -17,6 +17,7 @@ import {
   users,
 } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
+import { insertMessage } from "@/lib/support";
 
 async function log(
   actorId: string,
@@ -165,6 +166,32 @@ export async function updateEscalationStatus(formData: FormData) {
 
   revalidatePath("/ops/escalations");
   revalidatePath("/ops");
+}
+
+// --- Support inbox ---
+
+const replySchema = z.object({
+  customerId: z.string().uuid(),
+  body: z.string().min(1).max(2000),
+});
+
+export async function sendOpsReplyAction(formData: FormData) {
+  const session = await requireRole(["ops_admin"]);
+  const parsed = replySchema.safeParse({
+    customerId: formData.get("customerId"),
+    body: formData.get("body"),
+  });
+  if (!parsed.success) redirect("/ops/support?error=invalid");
+
+  await insertMessage({
+    customerId: parsed.data.customerId,
+    senderId: session.user.id,
+    senderRole: "ops",
+    body: parsed.data.body,
+  });
+
+  revalidatePath("/ops/support");
+  redirect(`/ops/support?customer=${parsed.data.customerId}`);
 }
 
 // --- Mystery-shopper audits ---

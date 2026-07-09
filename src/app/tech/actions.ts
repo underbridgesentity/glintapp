@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { createHash } from "crypto";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
@@ -15,6 +17,7 @@ import {
 import { requireRole } from "@/lib/guard";
 import { FIELD_ROLES } from "@/lib/roles";
 import { notificationService } from "@/lib/notifications";
+import { logWashEvent } from "@/lib/wash-events";
 import { assignedSiteFor } from "./data";
 import { CHECKLIST_POINTS } from "./checklist";
 
@@ -59,8 +62,47 @@ export async function claimBookingAction(formData: FormData) {
     })
     .where(eq(bookings.id, booking.id));
 
+  await logWashEvent({
+    bookingId: booking.id,
+    kind: "claimed",
+    note: `Claimed by ${session.user.name ?? "a technician"}`,
+    actorId: session.user.id,
+  });
+  await logWashEvent({
+    bookingId: booking.id,
+    kind: "in_progress",
+    actorId: session.user.id,
+  });
+
   revalidatePath("/tech");
   redirect(`/tech/wash/${booking.id}`);
+}
+
+export async function markArrivedAction(formData: FormData) {
+  const { session, site } = await fieldContext();
+  const parsed = idSchema.safeParse({ bookingId: formData.get("bookingId") });
+  if (!parsed.success) throw new Error("Invalid booking.");
+
+  const booking = await siteScopedBooking(parsed.data.bookingId, site.id);
+  if (booking.status !== "in_progress") {
+    throw new Error("Booking is not in progress.");
+  }
+  if (
+    booking.technicianId !== session.user.id &&
+    session.user.role !== "site_lead"
+  ) {
+    throw new Error("Only the claiming technician or a site lead can mark arrival.");
+  }
+
+  // Timeline-only: the booking record is unchanged.
+  await logWashEvent({
+    bookingId: booking.id,
+    kind: "arrived",
+    note: "On site",
+    actorId: session.user.id,
+  });
+
+  revalidatePath(`/tech/wash/${booking.id}`);
 }
 
 const checklistSchema = z.object({
@@ -115,6 +157,14 @@ export async function saveChecklistAction(formData: FormData) {
       notes: parsed.data.notes ?? null,
     });
   }
+
+  const passed = points.filter((p) => p.pass).length;
+  await logWashEvent({
+    bookingId: booking.id,
+    kind: "checklist_progress",
+    progress: passed,
+    actorId: session.user.id,
+  });
 
   revalidatePath(`/tech/wash/${booking.id}`);
 }
@@ -171,6 +221,20 @@ export async function markDoneAction(formData: FormData) {
     entityId: booking.id,
     before: { status: booking.status },
     after: { status: "complete", completedAt: completedAt.toISOString() },
+  });
+
+  if (parsed.data.photoUrls.length > 0) {
+    await logWashEvent({
+      bookingId: booking.id,
+      kind: "photos_uploaded",
+      note: `${parsed.data.photoUrls.length} proof photos`,
+      actorId: session.user.id,
+    });
+  }
+  await logWashEvent({
+    bookingId: booking.id,
+    kind: "complete",
+    actorId: session.user.id,
   });
 
   const [vehicle] = await db
@@ -262,8 +326,11 @@ export async function generateOtpAction(formData: FormData) {
 
   const key = await siteScopedKey(parsed.data.keyId, site.id);
   const otp = String(Math.floor(100000 + Math.random() * 900000));
+
+  // Persist only a hash — the plaintext code is never stored, so a DB read
+  // cannot recover past lockbox codes. The event log proves it was issued.
   const event = {
-    otp,
+    otpHash: createHash("sha256").update(otp).digest("hex"),
     generatedAt: new Date().toISOString(),
     by: session.user.id,
   };
@@ -284,7 +351,18 @@ export async function generateOtpAction(formData: FormData) {
     after: { keyTagCode: key.keyTagCode, generatedAt: event.generatedAt },
   });
 
+  // Deliver the code via a short-lived httpOnly cookie, never the URL — URLs
+  // land in access logs and history. The cookie is read once by the keys page
+  // and expires in 2 minutes.
+  const jar = await cookies();
+  jar.set("glint_otp_flash", `${otp}:${key.keyTagCode}`, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 120,
+    path: "/tech",
+  });
+
   revalidatePath("/tech/keys");
-  // Shown once via the query string; not persisted in the UI.
-  redirect(`/tech/keys?otp=${otp}&tag=${encodeURIComponent(key.keyTagCode)}`);
+  redirect("/tech/keys");
 }

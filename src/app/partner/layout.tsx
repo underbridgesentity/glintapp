@@ -5,6 +5,7 @@ import { profiles } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
 import { signOutAction } from "../(auth)/actions";
 import { Wordmark } from "@/components/wordmark";
+import { Icon } from "@/components/icons";
 
 export default async function PartnerLayout({
   children,
@@ -40,14 +41,16 @@ export default async function PartnerLayout({
         <nav className="flex gap-1 pb-3">
           <Link
             href="/partner"
-            className="rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
+            className="flex items-center gap-2 rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
           >
+            <Icon name="building" size={16} />
             Amenity
           </Link>
           <Link
             href="/partner/statement"
-            className="rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
+            className="flex items-center gap-2 rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
           >
+            <Icon name="wallet" size={16} />
             Statement
           </Link>
         </nav>

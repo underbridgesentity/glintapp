@@ -3,6 +3,7 @@
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
+import { sql as dsql } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import * as schema from "./schema";
 
@@ -33,9 +34,44 @@ function daysFrom(base: Date, offset: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+// Tables wiped before every seed so the script is re-runnable. Order is
+// irrelevant with CASCADE. Demo database only.
+const ALL_TABLES = [
+  "wash_events",
+  "messages",
+  "quality_checks",
+  "ratings",
+  "escalations",
+  "key_management",
+  "mystery_shopper_audits",
+  "payment_events",
+  "payments",
+  "notifications",
+  "bookings",
+  "subscriptions",
+  "site_requirements",
+  "vehicles",
+  "profiles",
+  "audit_log",
+  "sites",
+  "users",
+];
+
 async function main() {
   const hash = await bcrypt.hash("glint-demo-2026", 10);
   const now = new Date();
+
+  // Guard: the truncate below is destructive. Refuse to run against a
+  // production database unless explicitly forced.
+  if (process.env.NODE_ENV === "production" && process.env.SEED_ALLOW_DESTRUCTIVE !== "1") {
+    throw new Error(
+      "Refusing to seed: NODE_ENV=production. Set SEED_ALLOW_DESTRUCTIVE=1 to override."
+    );
+  }
+
+  for (const t of ALL_TABLES) {
+    await db.execute(dsql.raw(`TRUNCATE TABLE "${t}" RESTART IDENTITY CASCADE`));
+  }
 
   const insertUser = async (
     email: string,
@@ -203,7 +239,57 @@ async function main() {
     findings: "Queue handled to schedule. 1 vehicle missed tyre dressing.",
   });
 
-  console.info("Seed complete: 9 users, 2 sites, 32 vehicles, %d bookings.", inserted.length);
+  // Wash-event timelines so the customer tracker has real history.
+  for (const b of completed) {
+    if (!b.completedAt) continue;
+    const done = b.completedAt.getTime();
+    const step = (mins: number) => new Date(done - mins * 60000);
+    await db.insert(schema.washEvents).values([
+      { bookingId: b.id, kind: "booked", createdAt: step(180) },
+      { bookingId: b.id, kind: "queued", createdAt: step(120) },
+      { bookingId: b.id, kind: "claimed", actorId: b.technicianId, note: "Technician assigned", createdAt: step(60) },
+      { bookingId: b.id, kind: "in_progress", actorId: b.technicianId, createdAt: step(45) },
+      { bookingId: b.id, kind: "checklist_progress", actorId: b.technicianId, progress: 15, createdAt: step(15) },
+      { bookingId: b.id, kind: "photos_uploaded", actorId: b.technicianId, note: "2 proof photos", createdAt: step(5) },
+      { bookingId: b.id, kind: "complete", actorId: b.technicianId, createdAt: b.completedAt },
+    ]);
+  }
+  // Today's in-progress wash: partial live timeline.
+  const inProgress = inserted.find((b) => b.status === "in_progress");
+  if (inProgress) {
+    await db.insert(schema.washEvents).values([
+      { bookingId: inProgress.id, kind: "booked", createdAt: new Date(now.getTime() - 150 * 60000) },
+      { bookingId: inProgress.id, kind: "queued", createdAt: new Date(now.getTime() - 90 * 60000) },
+      { bookingId: inProgress.id, kind: "claimed", actorId: tech1.id, note: "Musa Khumalo assigned", createdAt: new Date(now.getTime() - 40 * 60000) },
+      { bookingId: inProgress.id, kind: "arrived", actorId: tech1.id, createdAt: new Date(now.getTime() - 35 * 60000) },
+      { bookingId: inProgress.id, kind: "in_progress", actorId: tech1.id, createdAt: new Date(now.getTime() - 30 * 60000) },
+      { bookingId: inProgress.id, kind: "checklist_progress", actorId: tech1.id, progress: 9, createdAt: new Date(now.getTime() - 8 * 60000) },
+    ]);
+  }
+
+  // Six months of historical subscription revenue for ops trend charts.
+  const histPayments: (typeof schema.payments.$inferInsert)[] = [];
+  for (let m = 6; m >= 1; m--) {
+    const when = new Date(now.getFullYear(), now.getMonth() - m, 2);
+    histPayments.push(
+      { userId: thandi.id, subscriptionId: subThandi.id, type: "subscription_recurring", amountCents: 75000, status: "complete", providerRef: `pf_hist_t${m}`, method: "card", createdAt: when },
+      { userId: sipho.id, subscriptionId: subSipho.id, type: "subscription_recurring", amountCents: 45000, status: "complete", providerRef: `pf_hist_s${m}`, method: "card", createdAt: when },
+      { userId: linda.id, subscriptionId: subLinda.id, type: "fleet_invoice", amountCents: 35000 * 30, status: "complete", providerRef: `pf_hist_l${m}`, method: "eft", createdAt: when },
+    );
+    if (m % 2 === 0) {
+      histPayments.push({ userId: sipho.id, type: "once_off", amountCents: 12000, status: "complete", providerRef: `pf_hist_o${m}`, method: "card", createdAt: when });
+    }
+  }
+  await db.insert(schema.payments).values(histPayments);
+
+  // Support conversation (human, DB-logged — no AI in the product).
+  await db.insert(schema.messages).values([
+    { customerId: thandi.id, senderId: thandi.id, senderRole: "customer", body: "Can the team do the interior this Friday too?", createdAt: new Date(now.getTime() - 120 * 60000) },
+    { customerId: thandi.id, senderId: admin.id, senderRole: "ops", body: "Done. Friday is set to interior and exterior. No change to your billing.", createdAt: new Date(now.getTime() - 90 * 60000), readAt: new Date(now.getTime() - 80 * 60000) },
+    { customerId: sipho.id, senderId: sipho.id, senderRole: "customer", body: "Which days are collection this month?", createdAt: new Date(now.getTime() - 200 * 60000) },
+  ]);
+
+  console.info("Seed complete: 9 users, 2 sites, 32 vehicles, %d bookings, timelines + support seeded.", inserted.length);
 }
 
 main().catch((err) => {

@@ -2,23 +2,45 @@ import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/reveal";
 import { CountUp } from "@/components/count-up";
+import { Icon, type IconName } from "@/components/icons";
 
-const STEPS = [
+const STEPS: { n: string; title: string; body: string; icon: IconName }[] = [
   {
     n: "01",
     title: "Park like you always do",
     body: "Your normal bay at your estate or office park. No keys needed for exterior washes.",
+    icon: "mapPin",
   },
   {
     n: "02",
     title: "We arrive. You don't notice.",
     body: "A Glint technician cleans your car between 9am and 3pm using eco-friendly, water-efficient methods.",
+    icon: "droplet",
   },
   {
     n: "03",
     title: "Notified when it's done",
     body: "Last cleaned: Today at 11:42. Proof photos in the app. Drive home clean.",
+    icon: "bell",
   },
+];
+
+const ECO_FEATURES: { icon: IconName; label: string }[] = [
+  { icon: "droplet", label: "Water-efficient reclaim process, no running hose" },
+  { icon: "leaf", label: "No driveway runoff left behind" },
+  { icon: "checkCircle", label: "15-point quality check on every wash" },
+];
+
+const TECH_FEATURES: { icon: IconName; label: string }[] = [
+  { icon: "shield", label: "15-point checklist completed on every car" },
+  { icon: "key", label: "OTP-secured lockboxes and coded key tags" },
+  { icon: "camera", label: "Completion photos before your car is marked done" },
+];
+
+const PARTNER_FEATURES: { icon: IconName; label: string }[] = [
+  { icon: "building", label: "Runs on your site with its own equipment and power" },
+  { icon: "gauge", label: "Co-branded dashboard and monthly reconciliation" },
+  { icon: "wallet", label: "Revenue share on portfolio deals" },
 ];
 
 const PLANS = [
@@ -181,10 +203,15 @@ export default function Marketing() {
               delay={i * 0.15}
               className="glass card-hover group rounded-card p-8"
             >
-              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lemon">
-                {s.n}
-              </p>
-              <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em]">
+              <div className="flex items-center justify-between">
+                <span className="flex h-11 w-11 items-center justify-center rounded-card bg-lemon-dim text-lemon">
+                  <Icon name={s.icon} size={20} />
+                </span>
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lemon">
+                  {s.n}
+                </p>
+              </div>
+              <h3 className="mt-5 text-xl font-semibold tracking-[-0.02em]">
                 {s.title}
               </h3>
               <p className="mt-3 text-sm text-mist">{s.body}</p>
@@ -222,6 +249,16 @@ export default function Marketing() {
             Every wash ends with a 15-point quality check and proof photos in
             the app.
           </p>
+          <ul className="mt-8 flex flex-col gap-3">
+            {ECO_FEATURES.map((f) => (
+              <li key={f.label} className="flex items-center gap-3 text-sm">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-pill bg-lemon-dim text-lemon">
+                  <Icon name={f.icon} size={16} />
+                </span>
+                <span className="text-mist">{f.label}</span>
+              </li>
+            ))}
+          </ul>
         </Reveal>
       </section>
 
@@ -246,6 +283,16 @@ export default function Marketing() {
               Keys are handled through coded tags and OTP-secured lockboxes.
               Your name never appears on a tag.
             </p>
+            <ul className="mt-8 flex flex-col gap-3">
+              {TECH_FEATURES.map((f) => (
+                <li key={f.label} className="flex items-center gap-3 text-sm">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-pill bg-lemon-dim text-lemon">
+                    <Icon name={f.icon} size={16} />
+                  </span>
+                  <span className="text-mist">{f.label}</span>
+                </li>
+              ))}
+            </ul>
           </Reveal>
           <Reveal className="img-drift relative order-1 aspect-[3/4] overflow-hidden rounded-card border border-carbon-border lg:order-2">
             <Image
@@ -282,7 +329,7 @@ export default function Marketing() {
                 }
                 style={
                   p.featured
-                    ? { background: "linear-gradient(160deg, rgba(205,255,0,0.14), transparent 45%), var(--carbon)" }
+                    ? { background: "linear-gradient(160deg, var(--lemon-dim), transparent 45%), var(--carbon)" }
                     : undefined
                 }
               >
@@ -354,6 +401,16 @@ export default function Marketing() {
               secure lockbox. Partners get a co-branded dashboard, monthly
               reconciliation, and a revenue share on portfolio deals.
             </p>
+            <ul className="mt-8 flex flex-col gap-3">
+              {PARTNER_FEATURES.map((f) => (
+                <li key={f.label} className="flex items-center gap-3 text-sm">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-pill bg-lemon-dim text-lemon">
+                    <Icon name={f.icon} size={16} />
+                  </span>
+                  <span className="text-mist">{f.label}</span>
+                </li>
+              ))}
+            </ul>
             <Link
               href="/sign-in"
               className="btn-press mt-10 inline-block rounded-pill border border-white/40 px-8 py-4 font-semibold hover:border-white"

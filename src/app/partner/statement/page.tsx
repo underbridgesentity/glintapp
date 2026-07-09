@@ -2,6 +2,8 @@ import { and, eq, gte, inArray, isNull, lt, sum } from "drizzle-orm";
 import { db } from "@/db";
 import { bookings, payments, profiles, sites } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
+import { StatTile } from "@/components/ui/stat-tile";
+import { Icon } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -119,7 +121,10 @@ export default async function StatementPage({
   return (
     <div className="flex flex-col gap-6 pt-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold tracking-[-0.025em]">
+        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-[-0.025em]">
+          <span className="text-lemon">
+            <Icon name="wallet" size={22} />
+          </span>
           Statement, {month}
         </h1>
         <div className="flex gap-2 text-sm">
@@ -146,6 +151,25 @@ export default async function StatementPage({
         </p>
       ) : (
         <>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <StatTile
+              label="Gross revenue"
+              value={fmtR(grossTotal)}
+              icon="creditCard"
+              sub="All sites, this month"
+            />
+            <StatTile
+              label={`Revenue share (${sharePct}%)`}
+              value={fmtR(shareCents)}
+              icon="wallet"
+              sub="Your payout for the month"
+              accent
+            />
+          </div>
+
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+            Per-site breakdown
+          </p>
           <div className="overflow-x-auto rounded-card border border-carbon-border">
             <table className="w-full min-w-[480px] text-sm">
               <thead>
@@ -172,21 +196,6 @@ export default async function StatementPage({
                 ))}
               </tbody>
             </table>
-          </div>
-
-          <div className="rounded-card border border-carbon-border bg-carbon-mid p-4">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-mist">Gross revenue, all sites</span>
-              <span className="text-white">{fmtR(grossTotal)}</span>
-            </div>
-            <div className="mt-2 flex items-center justify-between border-t border-carbon-border pt-2">
-              <span className="text-sm text-mist">
-                Revenue share ({sharePct}%)
-              </span>
-              <span className="text-xl font-semibold text-white">
-                {fmtR(shareCents)}
-              </span>
-            </div>
           </div>
 
           <p className="text-xs text-steel">

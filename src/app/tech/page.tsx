@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { bookings, vehicles } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
 import { FIELD_ROLES } from "@/lib/roles";
+import { Icon } from "@/components/icons";
 import { assignedSiteFor } from "./data";
 import { claimBookingAction } from "./actions";
 import { todayInJohannesburg } from "./checklist";
@@ -74,9 +75,14 @@ export default async function QueuePage() {
         const group = rows.filter((r) => r.status === status);
         return (
           <section key={status}>
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
-              {label} ({group.length})
-            </h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+                {label}
+              </h2>
+              <span className="rounded-pill bg-carbon-raise px-2 py-0.5 text-[11px] font-medium text-mist">
+                {group.length}
+              </span>
+            </div>
             {group.length === 0 ? (
               <p className="mt-2 text-sm text-steel">Nothing here.</p>
             ) : (
@@ -87,39 +93,71 @@ export default async function QueuePage() {
                     className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="font-semibold text-white">
-                          {b.make} {b.model}
-                        </p>
-                        <p className="text-sm text-mist">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <Icon
+                            name="car"
+                            size={18}
+                            className="shrink-0 text-mist"
+                          />
+                          <p className="font-semibold text-white">
+                            {b.make} {b.model}
+                          </p>
+                        </div>
+                        <p className="mt-1 text-sm text-mist">
                           {b.colour} · {b.plate}
                         </p>
-                        <p className="mt-1 text-sm text-mist">
-                          {b.washType === "interior_exterior"
-                            ? "Interior + exterior"
-                            : "Exterior"}{" "}
-                          · {b.scheduledWindow}
-                        </p>
+                        <div className="mt-2 flex flex-col gap-1 text-sm text-mist">
+                          <span className="flex items-center gap-2">
+                            <Icon
+                              name="droplet"
+                              size={14}
+                              className="shrink-0 text-steel"
+                            />
+                            {b.washType === "interior_exterior"
+                              ? "Interior + exterior"
+                              : "Exterior"}
+                          </span>
+                          <span className="flex items-center gap-2">
+                            <Icon
+                              name="clock"
+                              size={14}
+                              className="shrink-0 text-steel"
+                            />
+                            {b.scheduledWindow}
+                          </span>
+                          <span className="flex items-center gap-2">
+                            <Icon
+                              name="mapPin"
+                              size={14}
+                              className="shrink-0 text-steel"
+                            />
+                            {site.name}
+                          </span>
+                        </div>
                       </div>
                       {status === "queued" ? (
                         <form action={claimBookingAction}>
                           <input type="hidden" name="bookingId" value={b.id} />
                           <button
                             type="submit"
-                            className="btn-press rounded-pill bg-lemon px-5 py-2 text-sm font-semibold text-carbon"
+                            className="btn-press inline-flex items-center gap-1.5 rounded-pill bg-lemon px-5 py-2 text-sm font-semibold text-carbon"
                           >
                             Claim
+                            <Icon name="arrowRight" size={16} />
                           </button>
                         </form>
                       ) : status === "in_progress" ? (
                         <Link
                           href={`/tech/wash/${b.id}`}
-                          className="btn-press rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
+                          className="btn-press inline-flex items-center gap-1.5 rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
                         >
                           Open
+                          <Icon name="chevronRight" size={16} className="text-mist" />
                         </Link>
                       ) : (
-                        <span className="rounded-pill bg-carbon-raise px-4 py-1 text-xs text-mist">
+                        <span className="inline-flex items-center gap-1.5 rounded-pill bg-carbon-raise px-4 py-1 text-xs text-mist">
+                          <Icon name="checkCircle" size={14} className="text-steel" />
                           Done
                         </span>
                       )}
