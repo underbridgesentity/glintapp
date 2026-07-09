@@ -8,11 +8,13 @@ export function Reveal({
   delay = 0,
   className = "",
   as: Tag = "div",
+  style,
 }: {
   children: ReactNode;
   delay?: number;
   className?: string;
   as?: "div" | "section" | "article" | "li";
+  style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLElement>(null);
 
@@ -36,7 +38,11 @@ export function Reveal({
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    <Tag ref={ref as any} className={`reveal ${className}`} style={{ "--d": `${delay}s` } as React.CSSProperties}>
+    <Tag
+      ref={ref as any}
+      className={`reveal ${className}`}
+      style={{ "--d": `${delay}s`, ...style } as React.CSSProperties}
+    >
       {children}
     </Tag>
   );
