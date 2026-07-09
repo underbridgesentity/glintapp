@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ServiceWorker } from "@/components/service-worker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body className="min-h-dvh bg-carbon text-white antialiased">
         {children}
+        <ServiceWorker />
       </body>
     </html>
   );
