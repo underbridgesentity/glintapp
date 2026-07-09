@@ -54,7 +54,7 @@ const STATS: [string, string][] = [
 function Wordmark({ className = "" }: { className?: string }) {
   return (
     <span className={`wordmark ${className}`}>
-      glint<span className="text-lemon">.</span>
+      Glint<span className="text-lemon">.</span>
     </span>
   );
 }

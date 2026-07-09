@@ -84,7 +84,7 @@ export default async function QueuePage() {
                 {group.map((b) => (
                   <li
                     key={b.id}
-                    className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+                    className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
@@ -106,7 +106,7 @@ export default async function QueuePage() {
                           <input type="hidden" name="bookingId" value={b.id} />
                           <button
                             type="submit"
-                            className="rounded-pill bg-lemon px-5 py-2 text-sm font-semibold text-carbon"
+                            className="btn-press rounded-pill bg-lemon px-5 py-2 text-sm font-semibold text-carbon"
                           >
                             Claim
                           </button>
@@ -114,7 +114,7 @@ export default async function QueuePage() {
                       ) : status === "in_progress" ? (
                         <Link
                           href={`/tech/wash/${b.id}`}
-                          className="rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
+                          className="btn-press rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
                         >
                           Open
                         </Link>

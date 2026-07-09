@@ -69,7 +69,7 @@ export default async function HomePage() {
         </h1>
 
         {isFleet ? (
-          <div className="mt-4 rounded-card border border-carbon-border bg-carbon-mid p-5">
+          <div className="card-hover mt-4 rounded-card border border-carbon-border bg-carbon-mid p-5">
             <p className="text-3xl font-bold text-white">
               {myVehicles.length}
             </p>
@@ -79,7 +79,7 @@ export default async function HomePage() {
             </p>
             <Link
               href="/app/fleet"
-              className="mt-4 inline-block rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
+              className="btn-press mt-4 inline-block rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
             >
               Open fleet view
             </Link>
@@ -91,7 +91,7 @@ export default async function HomePage() {
             </p>
             <Link
               href="/app/vehicles"
-              className="mt-4 inline-block rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
+              className="btn-press mt-4 inline-block rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
             >
               Add a vehicle
             </Link>
@@ -103,7 +103,7 @@ export default async function HomePage() {
               return (
                 <li
                   key={v.id}
-                  className="flex items-center justify-between rounded-card border border-carbon-border bg-carbon-mid p-4"
+                  className="card-hover flex items-center justify-between rounded-card border border-carbon-border bg-carbon-mid p-4"
                 >
                   <span className="text-sm font-medium text-white">
                     {v.colour} {v.make} {v.model}
@@ -131,13 +131,13 @@ export default async function HomePage() {
 
       <Link
         href="/app/book"
-        className="rounded-pill bg-lemon px-8 py-4 text-center font-semibold text-carbon"
+        className="btn-press rounded-pill bg-lemon px-8 py-4 text-center font-semibold text-carbon"
       >
         Book next wash
       </Link>
 
       <section>
-        <h2 className="text-sm font-semibold uppercase tracking-[0.1em] text-mist">
+        <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-lemon">
           Notifications
         </h2>
         {unread.length === 0 ? (
@@ -149,7 +149,7 @@ export default async function HomePage() {
             {unread.map((n) => (
               <li
                 key={n.id}
-                className="flex items-start justify-between gap-3 rounded-card border border-carbon-border bg-carbon-mid p-4"
+                className="card-hover flex items-start justify-between gap-3 rounded-card border border-carbon-border bg-carbon-mid p-4"
               >
                 <div>
                   <p className="text-sm text-white">
@@ -163,7 +163,7 @@ export default async function HomePage() {
                   <input type="hidden" name="notificationId" value={n.id} />
                   <button
                     type="submit"
-                    className="rounded-pill border border-carbon-border px-3 py-1 text-xs text-mist"
+                    className="btn-press rounded-pill border border-carbon-border px-3 py-1 text-xs text-mist"
                   >
                     Mark read
                   </button>

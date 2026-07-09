@@ -86,7 +86,7 @@ export default async function PartnerDashboard() {
           {rows.map((s) => (
             <li
               key={s.id}
-              className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+              className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4"
             >
               <p className="font-semibold text-white">{s.name}</p>
               <div className="mt-3 grid grid-cols-3 gap-3 text-center">

@@ -83,15 +83,15 @@ export default async function OpsDashboard() {
   return (
     <div className="flex flex-col gap-8 pt-4">
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <div className="rounded-card border border-carbon-border bg-carbon-mid p-4">
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+        <div className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4">
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lemon">
             Revenue this month
           </p>
           <p className="mt-1 text-2xl font-semibold text-white">
             {fmtR(revenueTotal)}
           </p>
         </div>
-        <div className="rounded-card border border-carbon-border bg-carbon-mid p-4">
+        <div className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4">
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
             Open escalations
           </p>
@@ -99,7 +99,7 @@ export default async function OpsDashboard() {
             {openEsc?.n ?? 0}
           </p>
         </div>
-        <div className="rounded-card border border-carbon-border bg-carbon-mid p-4">
+        <div className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4">
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
             Sites
           </p>
@@ -174,7 +174,7 @@ export default async function OpsDashboard() {
             {revenueRows.map((r) => (
               <div
                 key={r.type}
-                className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+                className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4"
               >
                 <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
                   {SEGMENT_LABELS[r.type] ?? r.type}

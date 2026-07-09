@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { signUpAction } from "../actions";
+import { Wordmark } from "@/components/wordmark";
 
 export default async function SignUpPage({
   searchParams,
@@ -8,7 +9,12 @@ export default async function SignUpPage({
 }) {
   const { error } = await searchParams;
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-6">
+    <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-6 py-12">
+      <Link href="/" aria-label="Glint home" className="mb-8">
+        <Wordmark className="text-3xl text-white" />
+      </Link>
+
+      <div className="glass rounded-card p-8">
       <h1 className="text-3xl font-bold tracking-[-0.025em]">
         Create your account
       </h1>
@@ -17,7 +23,7 @@ export default async function SignUpPage({
       </p>
 
       {error ? (
-        <p className="mt-4 rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white">
+        <p className="mt-4 rounded-card border border-carbon-border bg-carbon-raise px-4 py-3 text-sm text-white">
           {error === "exists"
             ? "That email already has an account. Sign in instead."
             : "Check your details and try again. Password needs 8 characters."}
@@ -65,7 +71,7 @@ export default async function SignUpPage({
           <legend className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
             I am
           </legend>
-          <label className="flex items-center gap-3 rounded-card border border-carbon-border bg-carbon-mid px-4 py-3">
+          <label className="flex items-center gap-3 rounded-card border border-carbon-border bg-carbon-raise px-4 py-3">
             <input
               type="radio"
               name="role"
@@ -74,22 +80,23 @@ export default async function SignUpPage({
             />
             <span>A resident. My car lives where I do.</span>
           </label>
-          <label className="flex items-center gap-3 rounded-card border border-carbon-border bg-carbon-mid px-4 py-3">
+          <label className="flex items-center gap-3 rounded-card border border-carbon-border bg-carbon-raise px-4 py-3">
             <input type="radio" name="role" value="fleet_manager" />
             <span>A fleet manager. 2 or more vehicles, one invoice.</span>
           </label>
-          <label className="flex items-center gap-3 rounded-card border border-carbon-border bg-carbon-mid px-4 py-3">
+          <label className="flex items-center gap-3 rounded-card border border-carbon-border bg-carbon-raise px-4 py-3">
             <input type="radio" name="role" value="once_off" />
             <span>Here for a single wash.</span>
           </label>
         </fieldset>
         <button
           type="submit"
-          className="mt-2 rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
+          className="btn-press mt-2 rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
         >
           Create account
         </button>
       </form>
+      </div>
 
       <p className="mt-6 text-sm text-mist">
         Already registered?{" "}
