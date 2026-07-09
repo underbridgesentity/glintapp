@@ -75,7 +75,7 @@ export default async function HistoryPage() {
             return (
               <li
                 key={booking.id}
-                className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+                className="surface-1 rounded-card p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-start gap-2.5">
@@ -117,7 +117,7 @@ export default async function HistoryPage() {
 
                 <Link
                   href={`/app/track/${booking.id}`}
-                  className="btn-press mt-3 inline-flex items-center gap-1.5 rounded-pill border border-carbon-border px-4 py-1.5 text-xs font-medium text-white"
+                  className="btn-press mt-3 inline-flex items-center gap-1.5 btn-secondary px-4 py-1.5 text-xs "
                 >
                   <Icon name="activity" size={14} /> Track
                 </Link>
@@ -169,7 +169,7 @@ export default async function HistoryPage() {
                     />
                     <button
                       type="submit"
-                      className="self-start rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
+                      className="self-start btn-secondary px-5 py-2 text-sm "
                     >
                       Submit rating
                     </button>

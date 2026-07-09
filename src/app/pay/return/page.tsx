@@ -20,7 +20,7 @@ export default async function PaymentReturnPage() {
       </p>
       <Link
         href="/app"
-        className="mt-8 rounded-pill border border-carbon-border px-8 py-4 text-center font-semibold text-white"
+        className="mt-8 btn-secondary px-8 py-4 text-center "
       >
         Back to your dashboard
       </Link>

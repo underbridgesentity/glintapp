@@ -38,7 +38,7 @@ export default async function SupportPage() {
       </header>
 
       {thread.length === 0 ? (
-        <div className="rounded-card border border-carbon-border bg-carbon-mid p-8 text-center">
+        <div className="surface-1 rounded-card p-8 text-center">
           <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-pill bg-carbon-raise text-mist">
             <Icon name="message" size={22} />
           </span>
@@ -87,11 +87,11 @@ export default async function SupportPage() {
           maxLength={2000}
           rows={1}
           placeholder="Write a message"
-          className="min-h-[46px] flex-1 resize-none rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white placeholder:text-steel"
+          className="min-h-[46px] flex-1 resize-none surface-1 rounded-card px-4 py-3 text-sm text-white placeholder:text-steel"
         />
         <button
           type="submit"
-          className="btn-press flex h-[46px] shrink-0 items-center rounded-pill bg-lemon px-6 font-semibold text-carbon"
+          className="btn-primary flex h-[46px] shrink-0 items-center px-6"
         >
           Send
         </button>

@@ -99,7 +99,7 @@ export default async function WashPage({
 
           <form
             action={saveChecklistAction}
-            className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+            className="surface-1 rounded-card p-4"
           >
             <input type="hidden" name="bookingId" value={booking.id} />
             <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
@@ -135,7 +135,7 @@ export default async function WashPage({
             </label>
             <button
               type="submit"
-              className="mt-4 w-full rounded-pill border border-carbon-border px-6 py-3 font-semibold text-white"
+              className="mt-4 w-full btn-secondary px-6 py-3 "
             >
               {check ? "Update checklist" : "Save checklist"}
             </button>
@@ -149,7 +149,7 @@ export default async function WashPage({
           {canComplete ? (
             <form
               action={markDoneAction}
-              className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+              className="surface-1 rounded-card p-4"
             >
               <input type="hidden" name="bookingId" value={booking.id} />
               <h3 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
@@ -167,7 +167,7 @@ export default async function WashPage({
               </label>
               <button
                 type="submit"
-                className="mt-4 w-full rounded-pill bg-lemon px-6 py-3 font-semibold text-carbon"
+                className="mt-4 w-full btn-primary px-6 py-3"
               >
                 Mark done
               </button>

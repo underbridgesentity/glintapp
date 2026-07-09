@@ -236,31 +236,39 @@ export default async function OpsDashboard() {
 
       {/* KPI row */}
       <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatTile
-          label="Revenue this month"
-          value={fmtR(revenueTotal)}
-          icon="wallet"
-          sub={revSub}
-          accent
-        />
-        <StatTile
-          label="Washes today"
-          value={String(todayTotal)}
-          icon="droplet"
-          sub={`${washDelta >= 0 ? "+" : ""}${washDelta} vs yesterday`}
-        />
-        <StatTile
-          label="Open escalations"
-          value={String(openEsc)}
-          icon="alert"
-          sub={newOpen > 0 ? `${newOpen} new` : "queue clear"}
-        />
-        <StatTile
-          label="Avg rating"
-          value={avgRating ? avgRating.toFixed(1) : "—"}
-          icon="star"
-          sub={`${ratingN} ratings, 30d`}
-        />
+        <div className="halo lift rounded-card">
+          <StatTile
+            label="Revenue this month"
+            value={fmtR(revenueTotal)}
+            icon="wallet"
+            sub={revSub}
+            accent
+          />
+        </div>
+        <div className="lift rounded-card">
+          <StatTile
+            label="Washes today"
+            value={String(todayTotal)}
+            icon="droplet"
+            sub={`${washDelta >= 0 ? "+" : ""}${washDelta} vs yesterday`}
+          />
+        </div>
+        <div className="lift rounded-card">
+          <StatTile
+            label="Open escalations"
+            value={String(openEsc)}
+            icon="alert"
+            sub={newOpen > 0 ? `${newOpen} new` : "queue clear"}
+          />
+        </div>
+        <div className="lift rounded-card">
+          <StatTile
+            label="Avg rating"
+            value={avgRating ? avgRating.toFixed(1) : "—"}
+            icon="star"
+            sub={`${ratingN} ratings, 30d`}
+          />
+        </div>
       </section>
 
       {/* Revenue */}
@@ -283,7 +291,7 @@ export default async function OpsDashboard() {
             </div>
           </div>
 
-          <div className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+          <div className="surface-1 rounded-card p-5">
             <h2 className="text-base font-semibold text-white">By segment</h2>
             <span className="text-xs text-steel">This month</span>
             {revenueTotal === 0 ? (
@@ -333,7 +341,7 @@ export default async function OpsDashboard() {
       <section className="flex flex-col gap-4">
         <SectionLabel>Operations</SectionLabel>
         <div className="grid gap-4 lg:grid-cols-2">
-          <div className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+          <div className="surface-1 rounded-card p-5">
             <div className="flex items-baseline justify-between">
               <h2 className="text-base font-semibold text-white">
                 Washes vs target
@@ -364,7 +372,7 @@ export default async function OpsDashboard() {
             )}
           </div>
 
-          <div className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+          <div className="surface-1 rounded-card p-5">
             <div className="flex items-baseline justify-between">
               <h2 className="text-base font-semibold text-white">
                 Today by status
@@ -391,7 +399,7 @@ export default async function OpsDashboard() {
       {/* Quality */}
       <section className="flex flex-col gap-4">
         <SectionLabel>Quality</SectionLabel>
-        <div className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+        <div className="surface-1 rounded-card p-5">
           <div className="flex items-baseline justify-between">
             <h2 className="text-base font-semibold text-white">
               Ratings distribution

@@ -8,7 +8,7 @@ import { addVehicleAction, removeVehicleAction } from "../actions";
 export const dynamic = "force-dynamic";
 
 const inputClass =
-  "rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white placeholder:text-steel";
+  "surface-1 rounded-card px-4 py-3 text-sm text-white placeholder:text-steel";
 
 export default async function VehiclesPage({
   searchParams,
@@ -41,7 +41,7 @@ export default async function VehiclesPage({
             {myVehicles.map((v) => (
               <li
                 key={v.id}
-                className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+                className="surface-1 rounded-card p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -113,7 +113,7 @@ export default async function VehiclesPage({
           />
           <button
             type="submit"
-            className="rounded-pill bg-lemon px-8 py-3.5 font-semibold text-carbon"
+            className="btn-primary px-8 py-3.5"
           >
             Add vehicle
           </button>

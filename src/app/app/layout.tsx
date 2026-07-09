@@ -3,9 +3,9 @@ import { requireRole } from "@/lib/guard";
 import { CUSTOMER_ROLES } from "@/lib/roles";
 import { signOutAction } from "@/app/(auth)/actions";
 import { Wordmark } from "@/components/wordmark";
-import { Icon, type IconName } from "@/components/icons";
+import { TabNav, type TabItem } from "@/components/tab-nav";
 
-const TABS: { href: string; label: string; icon: IconName }[] = [
+const TABS: TabItem[] = [
   { href: "/app", label: "Home", icon: "home" },
   { href: "/app/vehicles", label: "Vehicles", icon: "car" },
   { href: "/app/history", label: "History", icon: "list" },
@@ -29,28 +29,23 @@ export default async function CustomerLayout({
         <form action={signOutAction}>
           <button
             type="submit"
-            className="btn-press rounded-pill border border-carbon-border px-4 py-1.5 text-xs font-medium text-mist"
+            className="btn-secondary px-4 py-1.5 text-xs"
           >
             Sign out
           </button>
         </form>
       </header>
 
-      <main className="flex-1 px-6 pb-28 pt-6">{children}</main>
+      <main className="flex-1 px-6 pb-28 pt-6">
+        <div className="page-enter">{children}</div>
+      </main>
 
       <nav className="glass fixed inset-x-0 bottom-0 z-50 border-x-0 border-b-0">
-        <div className="mx-auto flex max-w-md justify-between px-4 py-2.5 sm:max-w-2xl">
-          {TABS.map((tab) => (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className="flex flex-1 flex-col items-center gap-1 rounded-card px-2 py-1 text-[10px] font-medium text-mist transition-colors duration-300 hover:text-white"
-            >
-              <Icon name={tab.icon} size={20} />
-              {tab.label}
-            </Link>
-          ))}
-        </div>
+        <TabNav
+          items={TABS}
+          rootHref="/app"
+          className="mx-auto max-w-md px-4 py-2 sm:max-w-2xl"
+        />
       </nav>
     </div>
   );

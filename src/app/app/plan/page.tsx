@@ -62,7 +62,7 @@ export default async function PlanPage({
       ) : null}
 
       {subscription ? (
-        <div className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+        <div className="surface-1 rounded-card p-5">
           <div className="flex items-center justify-between">
             <p className="text-lg font-semibold text-white">
               {PLAN_LABELS[subscription.plan]}
@@ -101,7 +101,7 @@ export default async function PlanPage({
           return (
             <div
               key={plan}
-              className="rounded-card border border-carbon-border bg-carbon-mid p-5"
+              className="surface-1 rounded-card p-5"
             >
               <div className="flex items-baseline justify-between">
                 <p className="font-semibold text-white">{PLAN_LABELS[plan]}</p>
@@ -120,7 +120,7 @@ export default async function PlanPage({
                   <input type="hidden" name="plan" value={plan} />
                   <button
                     type="submit"
-                    className="rounded-pill bg-lemon px-6 py-2.5 text-sm font-semibold text-carbon"
+                    className="btn-primary px-6 py-2.5 text-sm"
                   >
                     {subscription ? "Switch to this plan" : "Choose this plan"}
                   </button>

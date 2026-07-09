@@ -53,7 +53,7 @@ export default async function CheckoutPage({
                 <input type="hidden" name="item" value={key} />
                 <button
                   type="submit"
-                  className="flex w-full items-center justify-between rounded-card border border-carbon-border bg-carbon-mid px-6 py-5 text-left hover:bg-carbon-raise"
+                  className="surface-1 lift flex w-full items-center justify-between rounded-card px-6 py-5 text-left"
                 >
                   <span>
                     <span className="block font-semibold text-white">
@@ -111,7 +111,7 @@ export default async function CheckoutPage({
         payment securely.
       </p>
 
-      <dl className="mt-8 rounded-card border border-carbon-border bg-carbon-mid p-6">
+      <dl className="surface-2 halo mt-8 rounded-card p-6">
         <div className="flex items-center justify-between">
           <dt className="text-mist">{itemName}</dt>
           <dd className="font-semibold text-white">
@@ -133,7 +133,7 @@ export default async function CheckoutPage({
         ))}
         <button
           type="submit"
-          className="w-full rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
+          className="btn-primary w-full px-8 py-4"
         >
           Pay with PayFast
         </button>

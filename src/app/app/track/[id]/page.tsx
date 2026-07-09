@@ -165,7 +165,7 @@ export default async function TrackPage({
       </header>
 
       {/* Progress */}
-      <section className="flex items-center gap-5 rounded-card border border-carbon-border bg-carbon-mid p-5">
+      <section className="surface-2 halo flex items-center gap-5 rounded-card p-5">
         <ProgressRing
           value={progress}
           max={15}
@@ -219,7 +219,7 @@ export default async function TrackPage({
       {/* Rating */}
       {isComplete ? (
         rating ? (
-          <section className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+          <section className="surface-1 rounded-card p-5">
             <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
               Your rating
             </h2>
@@ -233,7 +233,7 @@ export default async function TrackPage({
         ) : (
           <form
             action={rateWashAction}
-            className="flex flex-col gap-3 rounded-card border border-carbon-border bg-carbon-mid p-5"
+            className="flex flex-col gap-3 surface-1 rounded-card p-5"
           >
             <input type="hidden" name="bookingId" value={booking.id} />
             <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
@@ -263,7 +263,7 @@ export default async function TrackPage({
             />
             <button
               type="submit"
-              className="self-start rounded-pill border border-carbon-border px-5 py-2 text-sm font-medium text-white"
+              className="self-start btn-secondary px-5 py-2 text-sm "
             >
               Submit rating
             </button>

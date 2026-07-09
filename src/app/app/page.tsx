@@ -130,7 +130,7 @@ function QuickAction({
   return (
     <Link
       href={href}
-      className="card-hover flex items-center gap-3 rounded-card border border-carbon-border bg-carbon-mid p-4"
+      className="surface-1 lift flex items-center gap-3 rounded-card p-4"
     >
       <span className="flex h-9 w-9 items-center justify-center rounded-pill bg-carbon-raise text-white">
         <Icon name={icon} size={18} />
@@ -307,13 +307,13 @@ export default async function HomePage() {
           </div>
           <Link
             href="/app/fleet"
-            className="btn-press mt-5 inline-flex items-center gap-2 rounded-pill border border-carbon-border px-6 py-3 text-sm font-medium text-white"
+            className="btn-secondary mt-5 inline-flex items-center gap-2 px-6 py-3 text-sm"
           >
             Open fleet view <Icon name="arrowRight" size={16} />
           </Link>
         </section>
       ) : myVehicles.length === 0 ? (
-        <section className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+        <section className="surface-1 rounded-card p-5">
           <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
             Get started
           </h2>
@@ -325,15 +325,16 @@ export default async function HomePage() {
           </p>
           <Link
             href="/app/vehicles"
-            className="btn-press mt-4 inline-flex items-center gap-2 rounded-pill bg-lemon px-6 py-3 font-semibold text-carbon"
+            className="btn-primary mt-4 inline-flex items-center gap-2 px-6 py-3"
           >
             <Icon name="plus" size={16} /> Add a vehicle
           </Link>
         </section>
       ) : hero && hero.booking.status === "in_progress" ? (
-        <section className="glass rounded-card p-5">
+        <section className="surface-2 halo rounded-card p-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+            <h2 className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+              <span className="live-dot" aria-hidden />
               Live status
             </h2>
             <span className="rounded-pill bg-lemon-dim px-3 py-1 text-xs font-semibold text-lemon">
@@ -360,7 +361,7 @@ export default async function HomePage() {
           </div>
           <Link
             href={`/app/track/${hero.booking.id}`}
-            className="btn-press mt-5 flex items-center justify-center gap-2 rounded-pill bg-lemon px-6 py-3 font-semibold text-carbon"
+            className="btn-primary mt-5 flex items-center justify-center gap-2 px-6 py-3"
           >
             Track wash <Icon name="arrowRight" size={16} />
           </Link>
@@ -394,13 +395,13 @@ export default async function HomePage() {
           </div>
           <Link
             href={`/app/track/${hero.booking.id}`}
-            className="btn-press mt-5 flex items-center justify-center gap-2 rounded-pill bg-lemon px-6 py-3 font-semibold text-carbon"
+            className="btn-primary mt-5 flex items-center justify-center gap-2 px-6 py-3"
           >
             Track wash <Icon name="arrowRight" size={16} />
           </Link>
         </section>
       ) : (
-        <section className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+        <section className="surface-1 rounded-card p-5">
           <h2 className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
             Live status
           </h2>
@@ -414,7 +415,7 @@ export default async function HomePage() {
           </p>
           <Link
             href="/app/book"
-            className="btn-press mt-4 inline-flex items-center gap-2 rounded-pill bg-lemon px-6 py-3 font-semibold text-carbon"
+            className="btn-primary mt-4 inline-flex items-center gap-2 px-6 py-3"
           >
             <Icon name="plus" size={16} /> Book next wash
           </Link>
@@ -485,7 +486,7 @@ export default async function HomePage() {
             {unread.map((n) => (
               <li
                 key={n.id}
-                className="card-hover flex items-start justify-between gap-3 rounded-card border border-carbon-border bg-carbon-mid p-4"
+                className="surface-1 lift flex items-start justify-between gap-3 rounded-card p-4"
               >
                 <div className="flex items-start gap-3">
                   <span className="mt-0.5 text-mist">
@@ -502,7 +503,7 @@ export default async function HomePage() {
                   <input type="hidden" name="notificationId" value={n.id} />
                   <button
                     type="submit"
-                    className="btn-press rounded-pill border border-carbon-border px-3 py-1 text-xs text-mist"
+                    className="btn-secondary px-3 py-1 text-xs text-mist"
                   >
                     Mark read
                   </button>

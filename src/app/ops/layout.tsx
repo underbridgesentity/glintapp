@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { requireRole } from "@/lib/guard";
 import { signOutAction } from "../(auth)/actions";
 import { Wordmark } from "@/components/wordmark";
-import { Icon, type IconName } from "@/components/icons";
+import { TabNav, type TabItem } from "@/components/tab-nav";
 
-const NAV: { href: string; label: string; icon: IconName }[] = [
+const NAV: TabItem[] = [
   { href: "/ops", label: "Dashboard", icon: "gauge" },
   { href: "/ops/escalations", label: "Escalations", icon: "alert" },
   { href: "/ops/audits", label: "Audits", icon: "shield" },
@@ -30,28 +29,20 @@ export default async function OpsLayout({
             </span>
           </div>
           <form action={signOutAction}>
-            <button
-              type="submit"
-              className="btn-press rounded-pill border border-carbon-border px-4 py-1.5 text-sm text-mist"
-            >
+            <button type="submit" className="btn-secondary px-4 py-1.5 text-sm">
               Sign out
             </button>
           </form>
         </header>
-        <nav className="flex gap-1 overflow-x-auto pb-3">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
-            >
-              <Icon name={item.icon} size={15} />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <TabNav
+          items={NAV}
+          rootHref="/ops"
+          className="!justify-start gap-1 overflow-x-auto pb-2"
+        />
       </div>
-      <main className="px-4 pt-6 sm:px-6">{children}</main>
+      <main className="px-4 pt-6 sm:px-6">
+        <div className="page-enter">{children}</div>
+      </main>
     </div>
   );
 }

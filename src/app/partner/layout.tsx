@@ -1,11 +1,15 @@
-import Link from "next/link";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { profiles } from "@/db/schema";
 import { requireRole } from "@/lib/guard";
 import { signOutAction } from "../(auth)/actions";
 import { Wordmark } from "@/components/wordmark";
-import { Icon } from "@/components/icons";
+import { TabNav, type TabItem } from "@/components/tab-nav";
+
+const NAV: TabItem[] = [
+  { href: "/partner", label: "Amenity", icon: "building" },
+  { href: "/partner/statement", label: "Statement", icon: "wallet" },
+];
 
 export default async function PartnerLayout({
   children,
@@ -30,32 +34,20 @@ export default async function PartnerLayout({
             </span>
           </div>
           <form action={signOutAction}>
-            <button
-              type="submit"
-              className="btn-press rounded-pill border border-carbon-border px-4 py-1.5 text-sm text-mist"
-            >
+            <button type="submit" className="btn-secondary px-4 py-1.5 text-sm">
               Sign out
             </button>
           </form>
         </header>
-        <nav className="flex gap-1 pb-3">
-          <Link
-            href="/partner"
-            className="flex items-center gap-2 rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
-          >
-            <Icon name="building" size={16} />
-            Amenity
-          </Link>
-          <Link
-            href="/partner/statement"
-            className="flex items-center gap-2 rounded-pill px-4 py-1.5 text-sm text-mist transition-colors duration-300 hover:bg-carbon-raise hover:text-white"
-          >
-            <Icon name="wallet" size={16} />
-            Statement
-          </Link>
-        </nav>
+        <TabNav
+          items={NAV}
+          rootHref="/partner"
+          className="!justify-start gap-1 pb-2"
+        />
       </div>
-      <main className="px-4 pt-6 sm:px-6">{children}</main>
+      <main className="px-4 pt-6 sm:px-6">
+        <div className="page-enter">{children}</div>
+      </main>
     </div>
   );
 }

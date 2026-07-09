@@ -52,7 +52,7 @@ export default async function SitesPage({
       <h1 className="text-2xl font-bold tracking-[-0.025em]">Sites</h1>
 
       {error ? (
-        <p className="rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white">
+        <p className="surface-1 rounded-card px-4 py-3 text-sm text-white">
           Check the form. Hours are HH:MM-HH:MM, target is 1 to 500.
         </p>
       ) : null}
@@ -67,7 +67,7 @@ export default async function SitesPage({
             {rows.map((s) => (
               <li
                 key={s.id}
-                className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+                className="surface-1 rounded-card p-4"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-semibold text-white">{s.name}</span>
@@ -104,7 +104,7 @@ export default async function SitesPage({
                   </label>
                   <button
                     type="submit"
-                    className="rounded-pill border border-carbon-border px-4 py-2 text-sm text-white"
+                    className="btn-secondary px-4 py-2 text-sm"
                   >
                     Save
                   </button>
@@ -115,7 +115,7 @@ export default async function SitesPage({
         )}
       </section>
 
-      <section className="rounded-card border border-carbon-border bg-carbon-mid p-4">
+      <section className="surface-1 rounded-card p-4">
         <h2 className="text-lg font-semibold text-white">Add site</h2>
         <form action={createSite} className="mt-4 flex flex-col gap-4">
           <label className="flex flex-col gap-1">
@@ -204,7 +204,7 @@ export default async function SitesPage({
           </label>
           <button
             type="submit"
-            className="self-start rounded-pill bg-lemon px-6 py-3 text-sm font-semibold text-carbon"
+            className="self-start btn-primary px-6 py-3 text-sm"
           >
             Add site
           </button>

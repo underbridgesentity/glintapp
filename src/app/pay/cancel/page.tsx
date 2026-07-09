@@ -18,7 +18,7 @@ export default async function PaymentCancelPage() {
       </p>
       <Link
         href="/pay/checkout"
-        className="mt-8 rounded-pill border border-carbon-border px-8 py-4 text-center font-semibold text-white"
+        className="mt-8 btn-secondary px-8 py-4 text-center "
       >
         Return to checkout
       </Link>

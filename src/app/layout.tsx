@@ -24,7 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-dvh bg-carbon text-white antialiased">
+      <body className="grain min-h-dvh bg-carbon text-white antialiased">
         {children}
         <ServiceWorker />
       </body>

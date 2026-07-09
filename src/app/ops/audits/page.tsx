@@ -43,12 +43,12 @@ export default async function AuditsPage({
       </h1>
 
       {error ? (
-        <p className="rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white">
+        <p className="surface-1 rounded-card px-4 py-3 text-sm text-white">
           Check the form. Score is 1 to 5, findings are required.
         </p>
       ) : null}
 
-      <section className="rounded-card border border-carbon-border bg-carbon-mid p-4">
+      <section className="surface-1 rounded-card p-4">
         <h2 className="text-lg font-semibold text-white">New audit</h2>
         {siteRows.length === 0 ? (
           <p className="mt-2 text-sm text-mist">
@@ -111,7 +111,7 @@ export default async function AuditsPage({
             </label>
             <button
               type="submit"
-              className="self-start rounded-pill bg-lemon px-6 py-3 text-sm font-semibold text-carbon"
+              className="self-start btn-primary px-6 py-3 text-sm"
             >
               Record audit
             </button>

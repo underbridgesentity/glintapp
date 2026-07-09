@@ -109,10 +109,7 @@ export default function Marketing() {
             >
               For sites
             </a>
-            <Link
-              href="/sign-in"
-              className="btn-press rounded-pill bg-lemon px-5 py-2 font-semibold text-carbon"
-            >
+            <Link href="/sign-in" className="btn-primary px-5 py-2 text-sm">
               Sign in
             </Link>
           </div>
@@ -145,7 +142,7 @@ export default function Marketing() {
               Last cleaned: Today at 11:42
             </span>
           </div>
-          <h1 className="max-w-4xl text-5xl font-extrabold leading-[1.02] tracking-[-0.04em] sm:text-7xl lg:text-8xl">
+          <h1 className="max-w-5xl text-5xl font-extrabold leading-[0.98] tracking-[-0.04em] sm:text-7xl lg:text-8xl xl:text-[9rem]">
             <span className="hero-rise block" style={{ "--d": "0.1s" } as React.CSSProperties}>
               Your car is clean.
             </span>
@@ -162,12 +159,15 @@ export default function Marketing() {
           >
             <Link
               href="/sign-up"
-              className="btn-press rounded-pill bg-lemon px-8 py-4 text-center font-semibold text-carbon"
+              className="btn-primary px-8 py-4 text-center"
             >
               Book your first wash
             </Link>
             <p className="text-sm text-mist">Book before 8am. Clean by noon.</p>
           </div>
+        </div>
+        <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 sm:block">
+          <span className="block h-10 w-px animate-pulse bg-carbon-border" />
         </div>
       </section>
 
@@ -175,11 +175,11 @@ export default function Marketing() {
       <section className="bg-white text-carbon">
         <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-carbon/10 px-0 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {STATS.map(([stat, label], i) => (
-            <Reveal key={label} delay={i * 0.12} className="px-6 py-12">
-              <p className="text-5xl font-extrabold tracking-[-0.03em]">
+            <Reveal key={label} delay={i * 0.12} className="px-8 py-16">
+              <p className="text-6xl font-extrabold tracking-[-0.04em] sm:text-7xl">
                 <CountUp value={stat} />
               </p>
-              <p className="mt-2 text-sm font-medium text-carbon/60">{label}</p>
+              <p className="mt-3 text-sm font-medium text-carbon/60">{label}</p>
             </Reveal>
           ))}
         </div>
@@ -201,20 +201,16 @@ export default function Marketing() {
               key={s.n}
               as="article"
               delay={i * 0.15}
-              className="glass card-hover group rounded-card p-8"
+              className="surface-1 lift group relative overflow-hidden rounded-card p-8"
             >
-              <div className="flex items-center justify-between">
-                <span className="flex h-11 w-11 items-center justify-center rounded-card bg-lemon-dim text-lemon">
-                  <Icon name={s.icon} size={20} />
-                </span>
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lemon">
-                  {s.n}
-                </p>
-              </div>
-              <h3 className="mt-5 text-xl font-semibold tracking-[-0.02em]">
+              <span aria-hidden className="ghost-numeral">{s.n}</span>
+              <span className="icon-chip icon-chip-lemon relative">
+                <Icon name={s.icon} size={18} />
+              </span>
+              <h3 className="relative mt-5 text-xl font-semibold tracking-[-0.02em]">
                 {s.title}
               </h3>
-              <p className="mt-3 text-sm text-mist">{s.body}</p>
+              <p className="relative mt-3 text-sm text-mist">{s.body}</p>
             </Reveal>
           ))}
         </div>
@@ -324,8 +320,8 @@ export default function Marketing() {
                 delay={i * 0.15}
                 className={
                   p.featured
-                    ? "card-pop glow-lemon relative flex flex-col rounded-card bg-carbon p-8 text-white lg:-my-4"
-                    : "card-pop flex flex-col rounded-card border border-carbon/10 bg-white p-8 shadow-[0_16px_48px_-24px_rgba(12,12,12,0.25)]"
+                    ? "card-pop halo relative flex flex-col rounded-card bg-carbon p-8 text-white lg:-my-4"
+                    : "card-pop flex flex-col rounded-card border border-carbon/10 bg-white p-8 shadow-[0_2px_4px_rgba(12,12,12,0.08),0_24px_56px_-24px_rgba(12,12,12,0.35)]"
                 }
                 style={
                   p.featured
@@ -363,9 +359,11 @@ export default function Marketing() {
                 </ul>
                 <Link
                   href="/sign-up"
-                  className={`btn-press mt-10 rounded-pill py-3 text-center text-sm font-semibold ${
-                    p.featured ? "bg-lemon text-carbon" : "bg-carbon text-white"
-                  }`}
+                  className={
+                    p.featured
+                      ? "btn-primary mt-10 py-3 text-center text-sm"
+                      : "btn-press mt-10 rounded-pill bg-carbon py-3 text-center text-sm font-semibold text-white shadow-[0_8px_24px_-8px_rgba(12,12,12,0.5)]"
+                  }
                 >
                   Start with {p.name}
                 </Link>
@@ -413,7 +411,7 @@ export default function Marketing() {
             </ul>
             <Link
               href="/sign-in"
-              className="btn-press mt-10 inline-block rounded-pill border border-white/40 px-8 py-4 font-semibold hover:border-white"
+              className="btn-secondary mt-10 inline-block px-8 py-4"
             >
               Partner with Glint
             </Link>
@@ -434,20 +432,51 @@ export default function Marketing() {
               <br />
               Drive home clean<span className="text-lemon">.</span>
             </h2>
-            <Link
-              href="/sign-up"
-              className="btn-press inline-block rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
-            >
+            <Link href="/sign-up" className="btn-primary inline-block px-8 py-4">
               Book your first wash
             </Link>
           </Reveal>
         </div>
       </section>
 
-      <footer className="border-t border-carbon-border">
-        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-6 py-12 text-sm text-steel sm:flex-row sm:items-center">
-          <Wordmark className="text-2xl text-white" />
-          <p>Eco-friendly, water-efficient car care. Johannesburg.</p>
+      <footer className="border-t border-carbon-border bg-carbon-mid/40">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:grid-cols-3">
+          <div>
+            <Wordmark className="text-3xl text-white" />
+            <p className="mt-4 max-w-xs text-sm text-mist">
+              Your car is cleaned while you work. Eco-friendly, water-efficient
+              methods at office parks and estates.
+            </p>
+          </div>
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+              Product
+            </p>
+            <ul className="mt-4 flex flex-col gap-2 text-sm text-mist">
+              <li><a href="#how" className="transition-colors hover:text-white">How it works</a></li>
+              <li><a href="#plans" className="transition-colors hover:text-white">Plans</a></li>
+              <li><a href="#sites" className="transition-colors hover:text-white">For estates and office parks</a></li>
+              <li><Link href="/sign-in" className="transition-colors hover:text-white">Sign in</Link></li>
+            </ul>
+          </div>
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+              Contact
+            </p>
+            <ul className="mt-4 flex flex-col gap-2 text-sm text-mist">
+              <li>Johannesburg, South Africa</li>
+              <li>
+                <a href="mailto:notifications@glintapp.co.za" className="transition-colors hover:text-white">
+                  notifications@glintapp.co.za
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-carbon-border">
+          <p className="mx-auto max-w-6xl px-6 py-6 text-xs text-steel">
+            Glint. Eco-friendly, water-efficient car care.
+          </p>
         </div>
       </footer>
     </main>

@@ -90,7 +90,7 @@ export default async function ReportPage() {
             sub="open"
           />
         </div>
-        <div className="mt-4 rounded-card border border-carbon-border bg-carbon-mid p-4">
+        <div className="mt-4 surface-1 rounded-card p-4">
           <Meter
             value={completes.length}
             max={site.dailyTarget}
@@ -112,7 +112,7 @@ export default async function ReportPage() {
             No technicians assigned to this site.
           </p>
         ) : (
-          <div className="mt-3 flex flex-col gap-4 rounded-card border border-carbon-border bg-carbon-mid p-4">
+          <div className="mt-3 flex flex-col gap-4 surface-1 rounded-card p-4">
             {perTech.map((t) => (
               <Meter
                 key={t.id}
@@ -140,7 +140,7 @@ export default async function ReportPage() {
             {unresolved.map((e) => (
               <li
                 key={e.id}
-                className="rounded-card border border-carbon-border bg-carbon-mid p-3"
+                className="surface-1 rounded-card p-3"
               >
                 <span className="rounded-pill bg-carbon-raise px-3 py-1 text-xs text-mist">
                   {e.status.replace(/_/g, " ")}
@@ -166,7 +166,7 @@ export default async function ReportPage() {
             {roster.map((t) => (
               <li
                 key={t.id}
-                className="flex items-center justify-between rounded-card border border-carbon-border bg-carbon-mid p-3"
+                className="flex items-center justify-between surface-1 rounded-card p-3"
               >
                 <span className="text-sm text-white">{t.name}</span>
                 <span className="text-xs text-steel">

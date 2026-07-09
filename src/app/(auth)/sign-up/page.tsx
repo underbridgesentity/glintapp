@@ -9,12 +9,12 @@ export default async function SignUpPage({
 }) {
   const { error } = await searchParams;
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center px-6 py-12">
+    <main className="page-enter mx-auto flex min-h-dvh max-w-md flex-col justify-center px-6 py-12">
       <Link href="/" aria-label="Glint home" className="mb-8">
         <Wordmark className="text-3xl text-white" />
       </Link>
 
-      <div className="glass rounded-card p-8">
+      <div className="glass surface-2 rounded-card p-8">
       <h1 className="text-3xl font-bold tracking-[-0.025em]">
         Create your account
       </h1>
@@ -91,7 +91,7 @@ export default async function SignUpPage({
         </fieldset>
         <button
           type="submit"
-          className="btn-press mt-2 rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
+          className="btn-primary mt-2 px-8 py-4"
         >
           Create account
         </button>

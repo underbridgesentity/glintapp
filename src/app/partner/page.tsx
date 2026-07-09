@@ -117,7 +117,7 @@ export default async function PartnerDashboard() {
             />
           </div>
 
-          <div className="rounded-card border border-carbon-border bg-carbon-mid p-4">
+          <div className="surface-1 rounded-card p-4">
             <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
               Washes per site
             </p>
@@ -132,7 +132,7 @@ export default async function PartnerDashboard() {
             {rows.map((s) => (
               <li
                 key={s.id}
-                className="card-hover rounded-card border border-carbon-border bg-carbon-mid p-4"
+                className="surface-1 lift rounded-card p-4"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-mist">

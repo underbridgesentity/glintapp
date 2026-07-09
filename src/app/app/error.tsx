@@ -9,7 +9,7 @@ export default function CustomerError({ reset }: { reset: () => void }) {
       </p>
       <button
         onClick={reset}
-        className="mt-6 rounded-pill border border-carbon-border px-6 py-2.5 text-sm font-medium text-white"
+        className="mt-6 btn-secondary px-6 py-2.5 text-sm "
       >
         Retry
       </button>

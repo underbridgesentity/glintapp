@@ -74,7 +74,7 @@ export default async function FleetPage() {
         </p>
       </div>
 
-      <section className="rounded-card border border-carbon-border bg-carbon-mid p-5">
+      <section className="surface-1 rounded-card p-5">
         <h2 className="text-sm font-semibold uppercase tracking-[0.1em] text-mist">
           Invoice summary
         </h2>
@@ -105,7 +105,7 @@ export default async function FleetPage() {
             </p>
             <Link
               href="/app/vehicles"
-              className="mt-4 inline-block rounded-pill bg-lemon px-6 py-2.5 text-sm font-semibold text-carbon"
+              className="mt-4 inline-block btn-primary px-6 py-2.5 text-sm"
             >
               Add vehicles
             </Link>
@@ -117,7 +117,7 @@ export default async function FleetPage() {
               return (
                 <li
                   key={v.id}
-                  className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+                  className="surface-1 rounded-card p-4"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div>

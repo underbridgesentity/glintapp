@@ -9,7 +9,7 @@ import { bookWashAction } from "../actions";
 export const dynamic = "force-dynamic";
 
 const inputClass =
-  "rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white";
+  "surface-1 rounded-card px-4 py-3 text-sm text-white";
 
 export default async function BookPage({
   searchParams,
@@ -43,7 +43,7 @@ export default async function BookPage({
         </p>
         <Link
           href="/app/vehicles"
-          className="mt-6 inline-block rounded-pill bg-lemon px-8 py-3.5 font-semibold text-carbon"
+          className="mt-6 inline-block btn-primary px-8 py-3.5"
         >
           Add a vehicle
         </Link>
@@ -106,7 +106,7 @@ export default async function BookPage({
 
         <button
           type="submit"
-          className="mt-2 rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
+          className="mt-2 btn-primary px-8 py-4"
         >
           Confirm booking
         </button>

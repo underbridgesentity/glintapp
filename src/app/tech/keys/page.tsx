@@ -72,7 +72,7 @@ export default async function KeysPage() {
           {rows.map(({ key, bookingStatus }) => (
             <li
               key={key.id}
-              className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+              className="surface-1 rounded-card p-4"
             >
               <div className="flex items-center justify-between">
                 <p className="flex items-center gap-2 font-semibold text-white">
@@ -95,7 +95,7 @@ export default async function KeysPage() {
                   <input type="hidden" name="keyId" value={key.id} />
                   <button
                     type="submit"
-                    className="rounded-pill border border-carbon-border px-4 py-2 text-sm font-medium text-white"
+                    className="btn-secondary px-4 py-2 text-sm "
                   >
                     Check in
                   </button>
@@ -104,7 +104,7 @@ export default async function KeysPage() {
                   <input type="hidden" name="keyId" value={key.id} />
                   <button
                     type="submit"
-                    className="rounded-pill border border-carbon-border px-4 py-2 text-sm font-medium text-white"
+                    className="btn-secondary px-4 py-2 text-sm "
                   >
                     Check out
                   </button>
@@ -113,7 +113,7 @@ export default async function KeysPage() {
                   <input type="hidden" name="keyId" value={key.id} />
                   <button
                     type="submit"
-                    className="rounded-pill bg-lemon px-4 py-2 text-sm font-semibold text-carbon"
+                    className="btn-primary px-4 py-2 text-sm"
                   >
                     Generate OTP
                   </button>

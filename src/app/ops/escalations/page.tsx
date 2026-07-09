@@ -59,7 +59,7 @@ export default async function EscalationsPage({
       <h1 className="text-2xl font-bold tracking-[-0.025em]">Escalations</h1>
 
       {error ? (
-        <p className="rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white">
+        <p className="surface-1 rounded-card px-4 py-3 text-sm text-white">
           {error === "transition"
             ? "That status change is not allowed from the current state."
             : "Something was off with that request. Try again."}
@@ -75,7 +75,7 @@ export default async function EscalationsPage({
           {open.map((r) => (
             <li
               key={r.id}
-              className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+              className="surface-1 rounded-card p-4"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="rounded-pill bg-carbon-raise px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
@@ -101,7 +101,7 @@ export default async function EscalationsPage({
                     <input type="hidden" name="escalationId" value={r.id} />
                     <button
                       type="submit"
-                      className="rounded-pill border border-carbon-border px-4 py-2 text-sm text-white"
+                      className="btn-secondary px-4 py-2 text-sm"
                     >
                       Assign to me
                     </button>
@@ -127,8 +127,8 @@ export default async function EscalationsPage({
                       type="submit"
                       className={
                         next.value === "resolved"
-                          ? "rounded-pill bg-lemon px-4 py-2 text-sm font-semibold text-carbon"
-                          : "rounded-pill border border-carbon-border px-4 py-2 text-sm text-white"
+                          ? "btn-primary px-4 py-2 text-sm"
+                          : "btn-secondary px-4 py-2 text-sm"
                       }
                     >
                       {next.label}

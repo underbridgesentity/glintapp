@@ -43,7 +43,7 @@ export default async function TeamPage({
       <h1 className="text-2xl font-bold tracking-[-0.025em]">Team</h1>
 
       {error ? (
-        <p className="rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white">
+        <p className="surface-1 rounded-card px-4 py-3 text-sm text-white">
           {error === "exists"
             ? "That email already has an account."
             : "Check the form. Password needs 8+ characters."}
@@ -60,7 +60,7 @@ export default async function TeamPage({
             {team.map((m) => (
               <li
                 key={m.id}
-                className="rounded-card border border-carbon-border bg-carbon-mid p-4"
+                className="surface-1 rounded-card p-4"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-semibold text-white">{m.name}</span>
@@ -79,7 +79,7 @@ export default async function TeamPage({
         )}
       </section>
 
-      <section className="rounded-card border border-carbon-border bg-carbon-mid p-4">
+      <section className="surface-1 rounded-card p-4">
         <h2 className="text-lg font-semibold text-white">Provision account</h2>
         <form action={provisionAccount} className="mt-4 flex flex-col gap-4">
           <label className="flex flex-col gap-1">
@@ -159,7 +159,7 @@ export default async function TeamPage({
           </label>
           <button
             type="submit"
-            className="self-start rounded-pill bg-lemon px-6 py-3 text-sm font-semibold text-carbon"
+            className="self-start btn-primary px-6 py-3 text-sm"
           >
             Create account
           </button>

@@ -63,7 +63,7 @@ export default async function OpsSupportPage({
       </header>
 
       {error ? (
-        <p className="rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white">
+        <p className="surface-1 rounded-card px-4 py-3 text-sm text-white">
           Message could not be sent. Keep it under 2000 characters.
         </p>
       ) : null}
@@ -72,7 +72,7 @@ export default async function OpsSupportPage({
         {/* Thread list */}
         <aside className="flex flex-col gap-2">
           {threads.length === 0 ? (
-            <p className="rounded-card border border-carbon-border bg-carbon-mid p-4 text-sm text-mist">
+            <p className="surface-1 rounded-card p-4 text-sm text-mist">
               No conversations yet.
             </p>
           ) : (
@@ -112,7 +112,7 @@ export default async function OpsSupportPage({
         </aside>
 
         {/* Conversation */}
-        <section className="flex min-h-[420px] flex-col rounded-card border border-carbon-border bg-carbon-mid">
+        <section className="flex min-h-[420px] flex-col surface-1 rounded-card">
           {!selected ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
               <span className="text-mist">
@@ -184,7 +184,7 @@ export default async function OpsSupportPage({
                 />
                 <button
                   type="submit"
-                  className="btn-press rounded-pill bg-lemon px-5 py-2 text-sm font-semibold text-carbon"
+                  className="btn-primary px-5 py-2 text-sm"
                 >
                   Send
                 </button>

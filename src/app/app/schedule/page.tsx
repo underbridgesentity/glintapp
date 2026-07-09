@@ -46,7 +46,7 @@ export default async function SchedulePage({
         </p>
         <Link
           href="/app/plan"
-          className="mt-6 inline-block rounded-pill bg-lemon px-8 py-3.5 font-semibold text-carbon"
+          className="mt-6 inline-block btn-primary px-8 py-3.5"
         >
           Choose a plan
         </Link>
@@ -78,7 +78,7 @@ export default async function SchedulePage({
         {DAYS.map((day) => (
           <label
             key={day.value}
-            className="flex items-center justify-between rounded-card border border-carbon-border bg-carbon-mid px-4 py-3 text-sm text-white"
+            className="flex items-center justify-between surface-1 rounded-card px-4 py-3 text-sm text-white"
           >
             {day.label}
             <input
@@ -92,7 +92,7 @@ export default async function SchedulePage({
         ))}
         <button
           type="submit"
-          className="mt-2 rounded-pill bg-lemon px-8 py-3.5 font-semibold text-carbon"
+          className="mt-2 btn-primary px-8 py-3.5"
         >
           Save wash days
         </button>
