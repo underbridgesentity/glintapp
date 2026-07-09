@@ -63,7 +63,7 @@ export default function Marketing() {
   return (
     <main className="bg-carbon text-white">
       {/* Nav */}
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-carbon-border/60 bg-carbon/80 backdrop-blur">
+      <header className="glass fixed inset-x-0 top-0 z-50 border-x-0 border-t-0">
         <nav className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6">
           <Link href="/" aria-label="Glint home">
             <Wordmark className="text-3xl" />
@@ -114,6 +114,15 @@ export default function Marketing() {
           style={{ background: "linear-gradient(to top, var(--carbon), transparent)" }}
         />
         <div className="relative mx-auto w-full max-w-6xl px-6 pb-24 pt-44">
+          <div
+            className="glass glass-sheen hero-rise mb-8 inline-flex items-center gap-3 rounded-pill px-5 py-2.5"
+            style={{ "--d": "0.05s" } as React.CSSProperties}
+          >
+            <span className="h-2 w-2 rounded-pill bg-lemon" />
+            <span className="text-sm font-medium text-white">
+              Last cleaned: Today at 11:42
+            </span>
+          </div>
           <h1 className="max-w-4xl text-5xl font-extrabold leading-[1.02] tracking-[-0.04em] sm:text-7xl lg:text-8xl">
             <span className="hero-rise block" style={{ "--d": "0.1s" } as React.CSSProperties}>
               Your car is clean.
@@ -170,7 +179,7 @@ export default function Marketing() {
               key={s.n}
               as="article"
               delay={i * 0.15}
-              className="card-hover group rounded-card border border-carbon-border bg-carbon-mid p-8 hover:bg-carbon-raise"
+              className="glass card-hover group rounded-card p-8"
             >
               <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lemon">
                 {s.n}
@@ -333,14 +342,14 @@ export default function Marketing() {
           style={{ background: "linear-gradient(to right, var(--carbon) 30%, transparent)" }}
         />
         <div className="relative mx-auto max-w-6xl px-6 py-32">
-          <Reveal>
+          <Reveal className="glass max-w-xl rounded-card p-10">
             <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-lemon">
               For estates and office parks
             </p>
-            <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
               An amenity your residents use every week.
             </h2>
-            <p className="mt-6 max-w-lg text-mist">
+            <p className="mt-6 text-mist">
               Glint operates on your site with its own equipment, power, and
               secure lockbox. Partners get a co-branded dashboard, monthly
               reconciliation, and a revenue share on portfolio deals.
@@ -355,20 +364,22 @@ export default function Marketing() {
         </div>
       </section>
 
-      {/* Final CTA — lemon block */}
-      <section className="bg-lemon text-carbon">
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-8 px-6 py-28">
-          <Reveal>
-            <h2 className="max-w-3xl text-4xl font-extrabold tracking-[-0.04em] sm:text-6xl">
+      {/* Final CTA — dark, glass panel, lemon as accent only */}
+      <section className="relative overflow-hidden bg-carbon">
+        <div
+          className="absolute inset-0"
+          style={{ background: "radial-gradient(60% 80% at 50% 120%, var(--lemon-dim), transparent 70%)" }}
+        />
+        <div className="relative mx-auto max-w-6xl px-6 py-28">
+          <Reveal className="glass glass-sheen mx-auto flex max-w-4xl flex-col items-center gap-8 rounded-card px-8 py-20 text-center">
+            <h2 className="text-4xl font-extrabold tracking-[-0.04em] sm:text-6xl">
               Park in the morning.
               <br />
-              Drive home clean.
+              Drive home clean<span className="text-lemon">.</span>
             </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
             <Link
               href="/sign-up"
-              className="btn-press inline-block rounded-pill bg-carbon px-8 py-4 font-semibold text-white"
+              className="btn-press inline-block rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
             >
               Book your first wash
             </Link>
