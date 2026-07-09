@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Reveal } from "@/components/reveal";
+import { CountUp } from "@/components/count-up";
 
 const STEPS = [
   {
@@ -40,6 +42,12 @@ const PLANS = [
   },
 ];
 
+const STATS: [string, string][] = [
+  ["30–40", "cars cleaned per site, per day"],
+  ["15", "quality points checked on every wash"],
+  ["0", "minutes of your time required"],
+];
+
 export default function Marketing() {
   return (
     <main className="bg-carbon text-white">
@@ -48,18 +56,27 @@ export default function Marketing() {
         <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <span className="text-sm font-extrabold tracking-[0.14em]">GLINT</span>
           <div className="flex items-center gap-6 text-sm">
-            <a href="#how" className="hidden text-mist hover:text-white sm:block">
+            <a
+              href="#how"
+              className="hidden text-mist transition-colors duration-300 hover:text-white sm:block"
+            >
               How it works
             </a>
-            <a href="#plans" className="hidden text-mist hover:text-white sm:block">
+            <a
+              href="#plans"
+              className="hidden text-mist transition-colors duration-300 hover:text-white sm:block"
+            >
               Plans
             </a>
-            <a href="#sites" className="hidden text-mist hover:text-white sm:block">
+            <a
+              href="#sites"
+              className="hidden text-mist transition-colors duration-300 hover:text-white sm:block"
+            >
               For sites
             </a>
             <Link
               href="/sign-in"
-              className="rounded-pill border border-carbon-border px-5 py-2 font-semibold hover:border-white"
+              className="btn-press rounded-pill border border-carbon-border px-5 py-2 font-semibold hover:border-white"
             >
               Sign in
             </Link>
@@ -69,33 +86,45 @@ export default function Marketing() {
 
       {/* Hero */}
       <section className="relative flex min-h-dvh items-end overflow-hidden">
-        <Image
-          src="/images/hero-estate.jpg"
-          alt="A clean dark sedan in an outdoor parking bay at a modern residential estate under an overcast sky"
-          fill
-          priority
-          className="object-cover opacity-70"
-        />
+        <div className="hero-drift absolute inset-0">
+          <Image
+            src="/images/hero-estate.jpg"
+            alt="A clean dark sedan in an outdoor parking bay at a modern residential estate under an overcast sky"
+            fill
+            priority
+            className="object-cover opacity-70"
+          />
+        </div>
         <div className="absolute inset-0 bg-carbon/30" />
         <div
           className="absolute inset-x-0 bottom-0 h-2/3"
           style={{ background: "linear-gradient(to top, var(--carbon), transparent)" }}
         />
         <div className="relative mx-auto w-full max-w-6xl px-6 pb-24 pt-40">
-          <p className="mb-6 text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+          <p
+            className="hero-rise mb-6 text-[11px] font-bold uppercase tracking-[0.14em] text-mist"
+            style={{ "--d": "0.1s" } as React.CSSProperties}
+          >
             Office parks · Residential estates · South Africa
           </p>
           <h1 className="max-w-4xl text-5xl font-extrabold leading-[1.02] tracking-[-0.04em] sm:text-7xl lg:text-8xl">
-            Your car is clean.
-            <br />
-            You weren&apos;t there.
-            <br />
-            That&apos;s the point.
+            <span className="hero-rise block" style={{ "--d": "0.25s" } as React.CSSProperties}>
+              Your car is clean.
+            </span>
+            <span className="hero-rise block" style={{ "--d": "0.4s" } as React.CSSProperties}>
+              You weren&apos;t there.
+            </span>
+            <span className="hero-rise block" style={{ "--d": "0.55s" } as React.CSSProperties}>
+              That&apos;s the point.
+            </span>
           </h1>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div
+            className="hero-rise mt-10 flex flex-col gap-4 sm:flex-row sm:items-center"
+            style={{ "--d": "0.75s" } as React.CSSProperties}
+          >
             <Link
               href="/sign-up"
-              className="rounded-pill bg-lemon px-8 py-4 text-center font-semibold text-carbon"
+              className="btn-press rounded-pill bg-lemon px-8 py-4 text-center font-semibold text-carbon"
             >
               Book your first wash
             </Link>
@@ -107,53 +136,53 @@ export default function Marketing() {
       {/* Positioning strip */}
       <section className="border-y border-carbon-border">
         <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-carbon-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {[
-            ["30–40", "cars cleaned per site, per day"],
-            ["15", "quality points checked on every wash"],
-            ["0", "minutes of your time required"],
-          ].map(([stat, label]) => (
-            <div key={label} className="px-6 py-10">
-              <p className="text-4xl font-extrabold tracking-[-0.03em]">{stat}</p>
+          {STATS.map(([stat, label], i) => (
+            <Reveal key={label} delay={i * 0.12} className="px-6 py-10">
+              <p className="text-4xl font-extrabold tracking-[-0.03em]">
+                <CountUp value={stat} />
+              </p>
               <p className="mt-1 text-sm text-mist">{label}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* How it works */}
-      <section id="how" className="mx-auto max-w-6xl px-6 py-28">
-        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
-          How it works
-        </p>
-        <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
-          Glint sells time. The clean car is proof it worked.
-        </h2>
+      <section id="how" className="mx-auto max-w-6xl scroll-mt-16 px-6 py-28">
+        <Reveal>
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+            How it works
+          </p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
+            Glint sells time. The clean car is proof it worked.
+          </h2>
+        </Reveal>
         <div className="mt-16 grid gap-px overflow-hidden rounded-card border border-carbon-border bg-carbon-border sm:grid-cols-3">
-          {STEPS.map((s) => (
-            <article key={s.n} className="bg-carbon-mid p-8">
-              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+          {STEPS.map((s, i) => (
+            <Reveal key={s.n} as="article" delay={i * 0.15} className="group bg-carbon-mid p-8">
+              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel transition-colors duration-300 group-hover:text-white">
                 {s.n}
               </p>
               <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em]">
                 {s.title}
               </h3>
               <p className="mt-3 text-sm text-mist">{s.body}</p>
-            </article>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Eco panel */}
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pb-28 lg:grid-cols-2">
-        <div className="relative aspect-square overflow-hidden rounded-card border border-carbon-border">
+        <Reveal className="img-drift relative aspect-square overflow-hidden rounded-card border border-carbon-border">
           <Image
             src="/images/detail-panel.jpg"
             alt="Macro of a spotless black door panel reflecting cool ambient light"
             fill
             className="object-cover"
           />
-        </div>
-        <div>
+        </Reveal>
+        <Reveal delay={0.15}>
           <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
             Eco-friendly, water-efficient
           </p>
@@ -172,13 +201,13 @@ export default function Marketing() {
             Every wash ends with a 15-point quality check and proof photos in
             the app.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       {/* Technician panel */}
       <section className="border-y border-carbon-border bg-carbon-mid">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-28 lg:grid-cols-2">
-          <div className="order-2 lg:order-1">
+          <Reveal delay={0.15} className="order-2 lg:order-1">
             <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
               The people behind it
             </p>
@@ -196,31 +225,35 @@ export default function Marketing() {
               Keys are handled through coded tags and OTP-secured lockboxes.
               Your name never appears on a tag.
             </p>
-          </div>
-          <div className="relative order-1 aspect-[3/4] overflow-hidden rounded-card border border-carbon-border lg:order-2">
+          </Reveal>
+          <Reveal className="img-drift relative order-1 aspect-[3/4] overflow-hidden rounded-card border border-carbon-border lg:order-2">
             <Image
               src="/images/technician.jpg"
               alt="A focused Glint technician in matte black uniform hand-drying a silver sedan in an outdoor office park bay"
               fill
               className="object-cover"
             />
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Plans */}
-      <section id="plans" className="mx-auto max-w-6xl px-6 py-28">
-        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
-          Plans
-        </p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
-          One number. No surprises.
-        </h2>
+      <section id="plans" className="mx-auto max-w-6xl scroll-mt-16 px-6 py-28">
+        <Reveal>
+          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+            Plans
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
+            One number. No surprises.
+          </h2>
+        </Reveal>
         <div className="mt-16 grid gap-6 lg:grid-cols-3">
-          {PLANS.map((p) => (
-            <article
+          {PLANS.map((p, i) => (
+            <Reveal
               key={p.name}
-              className="flex flex-col rounded-card border border-carbon-border bg-carbon-mid p-8"
+              as="article"
+              delay={i * 0.15}
+              className="card-hover flex flex-col rounded-card border border-carbon-border bg-carbon-mid p-8"
             >
               <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
                 {p.name}
@@ -238,17 +271,17 @@ export default function Marketing() {
               </ul>
               <Link
                 href="/sign-up"
-                className="mt-10 rounded-pill border border-carbon-border py-3 text-center text-sm font-semibold hover:border-white"
+                className="btn-press mt-10 rounded-pill border border-carbon-border py-3 text-center text-sm font-semibold hover:border-white"
               >
                 Start with {p.name}
               </Link>
-            </article>
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* Sites / partners */}
-      <section id="sites" className="relative overflow-hidden border-t border-carbon-border">
+      <section id="sites" className="relative scroll-mt-16 overflow-hidden border-t border-carbon-border">
         <Image
           src="/images/site-dusk.jpg"
           alt="A modern South African office park at dusk"
@@ -261,40 +294,46 @@ export default function Marketing() {
           style={{ background: "linear-gradient(to right, var(--carbon) 30%, transparent)" }}
         />
         <div className="relative mx-auto max-w-6xl px-6 py-32">
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
-            For estates and office parks
-          </p>
-          <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
-            An amenity your residents use every week.
-          </h2>
-          <p className="mt-6 max-w-lg text-mist">
-            Glint operates on your site with its own equipment, power, and
-            secure lockbox. Partners get a co-branded dashboard, monthly
-            reconciliation, and a revenue share on portfolio deals.
-          </p>
-          <Link
-            href="/sign-in"
-            className="mt-10 inline-block rounded-pill border border-carbon-border px-8 py-4 font-semibold hover:border-white"
-          >
-            Partner with Glint
-          </Link>
+          <Reveal>
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-mist">
+              For estates and office parks
+            </p>
+            <h2 className="mt-3 max-w-xl text-3xl font-semibold tracking-[-0.025em] sm:text-4xl">
+              An amenity your residents use every week.
+            </h2>
+            <p className="mt-6 max-w-lg text-mist">
+              Glint operates on your site with its own equipment, power, and
+              secure lockbox. Partners get a co-branded dashboard, monthly
+              reconciliation, and a revenue share on portfolio deals.
+            </p>
+            <Link
+              href="/sign-in"
+              className="btn-press mt-10 inline-block rounded-pill border border-carbon-border px-8 py-4 font-semibold hover:border-white"
+            >
+              Partner with Glint
+            </Link>
+          </Reveal>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="border-t border-carbon-border">
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-8 px-6 py-28">
-          <h2 className="max-w-3xl text-4xl font-extrabold tracking-[-0.04em] sm:text-6xl">
-            Park in the morning.
-            <br />
-            Drive home clean.
-          </h2>
-          <Link
-            href="/sign-up"
-            className="rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
-          >
-            Book your first wash
-          </Link>
+          <Reveal>
+            <h2 className="max-w-3xl text-4xl font-extrabold tracking-[-0.04em] sm:text-6xl">
+              Park in the morning.
+              <br />
+              Drive home clean.
+            </h2>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <Link
+              href="/sign-up"
+              className="btn-press inline-block rounded-pill bg-lemon px-8 py-4 font-semibold text-carbon"
+            >
+              Book your first wash
+            </Link>
+          </Reveal>
         </div>
       </section>
 
