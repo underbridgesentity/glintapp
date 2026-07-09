@@ -68,6 +68,57 @@ export function renderEmail(
 ): Built | null {
   const first = name.split(" ")[0];
   switch (template) {
+    case "welcome": {
+      return {
+        subject: "Welcome to Glint",
+        html: layout({
+          preheader: "Your account is ready. Book your first wash.",
+          heading: "Welcome to Glint",
+          lines: [
+            `${first}, your account is ready.`,
+            "Add your car, pick your wash days, and park like you always do. We clean it while you work.",
+          ],
+          cta: { label: "Book your first wash", url: appUrl("/app/book") },
+        }),
+        text: `${first}, your account is ready. Book your first wash: ${appUrl("/app/book")}`,
+      };
+    }
+    case "plan_updated": {
+      const planLabels: Record<string, string> = {
+        basic: "Basic",
+        premium: "Premium",
+        fleet: "Fleet",
+      };
+      const plan = planLabels[String(payload.plan ?? "")] ?? "your plan";
+      return {
+        subject: "Plan updated",
+        html: layout({
+          preheader: `Your plan is now ${plan}.`,
+          heading: "Plan updated",
+          lines: [
+            `${first}, your plan is now ${plan}.`,
+            "The change takes effect on your next billing date.",
+          ],
+          cta: { label: "View your plan", url: appUrl("/app/plan") },
+        }),
+        text: `${first}, your plan is now ${plan}. View it: ${appUrl("/app/plan")}`,
+      };
+    }
+    case "escalation_opened": {
+      return {
+        subject: "We're fixing your last wash",
+        html: layout({
+          preheader: "We saw your rating. A re-wash is being arranged.",
+          heading: "We're on it",
+          lines: [
+            `${first}, we saw your rating on the last wash.`,
+            "Our team is reviewing it and arranging a re-wash. You don't need to do anything.",
+          ],
+          cta: { label: "See your history", url: appUrl("/app/history") },
+        }),
+        text: `${first}, we saw your rating and are arranging a re-wash. History: ${appUrl("/app/history")}`,
+      };
+    }
     case "wash_done": {
       const vehicle = String(payload.vehicle ?? "Your car");
       const time = String(payload.time ?? "");

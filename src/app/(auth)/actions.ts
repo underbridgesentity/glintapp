@@ -9,6 +9,7 @@ import { db } from "@/db";
 import { users, auditLog } from "@/db/schema";
 import { signIn } from "@/auth";
 import { homeFor, CUSTOMER_ROLES, type Role } from "@/lib/roles";
+import { notificationService } from "@/lib/notifications";
 
 const signUpSchema = z.object({
   name: z.string().min(2).max(120),
@@ -48,6 +49,13 @@ export async function signUpAction(formData: FormData) {
     entity: "users",
     entityId: user.id,
     after: { email, role },
+  });
+
+  // Welcome the new customer (in-app row + email).
+  await notificationService.send({
+    recipientId: user.id,
+    template: "welcome",
+    payload: { name },
   });
 
   await signIn("credentials", { email, password, redirect: false });
