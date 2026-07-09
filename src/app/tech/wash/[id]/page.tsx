@@ -138,7 +138,7 @@ export default async function WashPage({
                 <textarea
                   name="photoUrls"
                   rows={3}
-                  placeholder="https://..."
+                  placeholder="https://example.com/photo.jpg"
                   className="mt-1 w-full rounded-card border border-carbon-border bg-carbon p-3 text-white"
                 />
               </label>
