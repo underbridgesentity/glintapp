@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -103,6 +104,22 @@ export default function PrivacyPage() {
               ))}
             </section>
           ))}
+
+          <section>
+            <h2 className="text-xl font-semibold tracking-[-0.02em]">
+              Exercise your rights
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-mist">
+              To access, correct, or delete your personal information, or to
+              object to processing, reach the information officer via the{" "}
+              <Link href="/contact" className="text-white underline">
+                contact page
+              </Link>
+              . We respond within a reasonable time as POPIA requires. You may
+              escalate to the Information Regulator (South Africa) at any
+              point.
+            </p>
+          </section>
         </div>
       </section>
     </main>

@@ -39,9 +39,14 @@ export function MarketingFooter() {
           <ul className="mt-4 flex flex-col gap-2 text-sm text-mist">
             <li>Johannesburg, South Africa</li>
             <li>
-              <a href="mailto:support@glintapp.co.za" className="transition-colors hover:text-white">
-                support@glintapp.co.za
-              </a>
+              <Link href="/contact" className="transition-colors hover:text-white">
+                Contact us
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="transition-colors hover:text-white">
+                Get Glint at your site
+              </Link>
             </li>
           </ul>
         </div>

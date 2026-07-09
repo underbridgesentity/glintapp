@@ -13,6 +13,13 @@ function getClient(): Resend | null {
   return client;
 }
 
+// Internal notifications (leads, contact messages) go to a mailbox that can
+// actually receive. glintapp.co.za has no inbound mail yet — Resend only
+// covers sending — so this must stay a real, monitored address.
+export function opsInbox(): string {
+  return process.env.OPS_INBOX ?? "joseph@underbridges.co.za";
+}
+
 // Send one transactional email. Never throws into the caller — email delivery
 // must not break a booking, payment, or wash-completion flow.
 export async function sendEmail(input: {

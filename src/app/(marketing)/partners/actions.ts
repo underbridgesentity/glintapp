@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db } from "@/db";
 import { partnerLeads } from "@/db/schema";
-import { sendEmail } from "@/lib/email/resend";
+import { sendEmail, opsInbox } from "@/lib/email/resend";
 
 const leadSchema = z.object({
   name: z.string().min(2).max(120),
@@ -38,7 +38,7 @@ export async function submitPartnerLeadAction(formData: FormData) {
 
   // Best-effort heads-up to ops; the DB row is the source of truth.
   await sendEmail({
-    to: "ops@glintapp.co.za",
+    to: opsInbox(),
     subject: `Partner enquiry: ${lead.company}`,
     html: `<p>${lead.name} (${lead.email}${lead.phone ? `, ${lead.phone}` : ""}) — ${lead.company}${lead.sites ? `, ${lead.sites} sites` : ""}.</p><p>${lead.message ?? ""}</p>`,
     text: `${lead.name} (${lead.email}${lead.phone ? `, ${lead.phone}` : ""}) — ${lead.company}${lead.sites ? `, ${lead.sites} sites` : ""}. ${lead.message ?? ""}`,

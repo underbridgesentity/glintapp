@@ -371,6 +371,18 @@ export const partnerLeads = pgTable("partner_leads", {
   ...timestamps,
 });
 
+// Inbound messages from the public contact page. topic routes triage:
+// "coverage" rows are demand capture (where to launch next).
+export const contactMessages = pgTable("contact_messages", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  topic: text("topic").notNull(), // question | coverage | press | other
+  site: text("site"), // estate/office park name for coverage requests
+  body: text("body"),
+  ...timestamps,
+});
+
 export const auditLog = pgTable("audit_log", {
   id: uuid("id").primaryKey().defaultRandom(),
   actorId: uuid("actor_id").references(() => users.id),
