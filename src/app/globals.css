@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+/* Glint brand tokens — three colours, no exceptions. Dark mode always. */
+:root {
+  --carbon: #0c0c0c;
+  --carbon-mid: #141414;
+  --carbon-raise: #1c1c1c;
+  --carbon-border: #2a2a2a;
+  --steel: #5a5a5a;
+  --mist: #8c8c8c;
+  --white: #f8f8f8;
+  --lemon: #cdff00;
+  --lemon-dim: rgba(205, 255, 0, 0.12);
+  --lemon-border: rgba(205, 255, 0, 0.3);
+}
+
+@theme inline {
+  --color-carbon: var(--carbon);
+  --color-carbon-mid: var(--carbon-mid);
+  --color-carbon-raise: var(--carbon-raise);
+  --color-carbon-border: var(--carbon-border);
+  --color-steel: var(--steel);
+  --color-mist: var(--mist);
+  --color-white: var(--white);
+  --color-lemon: var(--lemon);
+  --color-lemon-dim: var(--lemon-dim);
+  --color-lemon-border: var(--lemon-border);
+  --font-sans: var(--font-inter);
+  --radius-card: 8px;
+  --radius-pill: 100px;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--carbon);
+  color: var(--white);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+p {
+  max-width: 65ch;
+  text-align: left;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lemon);
+  outline-offset: 2px;
+}
